@@ -1,0 +1,1 @@
+export {FerdigCollectionsClient} from './FerdigCollectionsClient';
