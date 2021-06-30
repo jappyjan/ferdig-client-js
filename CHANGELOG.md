@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.2.3...v1.3.0) (2021-06-30)
+
+
+### Features
+
+* list method moved to BasicCrudClient.ts ([39f0da7](https://www.github.com/jappyjan/ferdig-client-js/commit/39f0da70b65c49bb3005a66a20f66c96f9cab219))
+
 ### [1.2.3](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.2.2...v1.2.3) (2021-06-30)
 
 
