@@ -7,7 +7,11 @@ interface CollectionCreateData {
     internalName: string;
 }
 
-export class FerdigCollectionsClient extends BasicCrudClient<FerdigCollection, CollectionCreateData, Partial<CollectionCreateData>> {
+interface ListParams {}
+
+interface ListResult {}
+
+export class FerdigCollectionsClient extends BasicCrudClient<FerdigCollection, CollectionCreateData, Partial<CollectionCreateData>, ListParams, ListResult> {
     private readonly applicationId: string;
 
     public constructor(api: ApiRequest, applicationId: string) {

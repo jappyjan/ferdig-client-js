@@ -7,7 +7,17 @@ interface ApplicationCreateData {
     internalName: string;
 }
 
-export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication, ApplicationCreateData, Partial<ApplicationCreateData>> {
+interface ListParams {
+    skip: number;
+    take: number;
+}
+
+interface ListResult {
+    applications: FerdigApplication[];
+    moreAvailable: boolean;
+}
+
+export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication, ApplicationCreateData, Partial<ApplicationCreateData>, ListParams, ListResult> {
     public constructor(api: ApiRequest) {
         const basePath = `/applications`;
         super(api, basePath);
