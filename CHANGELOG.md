@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.0.4...v1.1.0) (2021-06-30)
+
+
+### Features
+
+* added build step ([e159b1a](https://www.github.com/jappyjan/ferdig-client-js/commit/e159b1a21d179d80dd58c14de6014364433d1660))
+
 ### [1.0.4](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.0.3...v1.0.4) (2021-06-30)
 
 
