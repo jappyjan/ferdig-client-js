@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.2](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.2.1...v1.2.2) (2021-06-30)
+
+
+### Bug Fixes
+
+* import paths ([21d3398](https://www.github.com/jappyjan/ferdig-client-js/commit/21d33980084bba0acb0ff74cc629b9511ba6ee72))
+
 ### [1.2.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.2.0...v1.2.1) (2021-06-30)
 
 
