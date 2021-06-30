@@ -2,7 +2,7 @@
   "name": "@ferdig/client-js",
   "version": "1.2.0",
   "description": "A JS client for the Ferdig BaaS",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/jappyjan/ferdig-client-js",
   "author": "Jan Jaap <mail@janjaap.de>",
   "license": "MIT",
@@ -15,5 +15,6 @@
   },
   "devDependencies": {
     "typescript": "^4.3.4"
-  }
+  },
+  "files": ["."]
 }
