@@ -2,8 +2,8 @@ import ApiRequest, {ApiRequestConfig} from './ApiRequest';
 import {FerdigApplicationsClient} from './Applications';
 
 export class FerdigClient {
+    public readonly applications: FerdigApplicationsClient;
     private readonly apiClient: ApiRequest;
-    private readonly applications: FerdigApplicationsClient;
 
     public constructor(config: ApiRequestConfig) {
         this.apiClient = new ApiRequest(config);
