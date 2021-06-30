@@ -1,6 +1,6 @@
 {
   "name": "@ferdig/client-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A JS client for the Ferdig BaaS",
   "main": "index.js",
   "repository": "https://github.com/jappyjan/ferdig-client-js",
