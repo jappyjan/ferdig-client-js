@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.0.4](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.0.3...v1.0.4) (2021-06-30)
+
+
+### Bug Fixes
+
+* yarn publish was missing --access public flag ([fddeeb0](https://www.github.com/jappyjan/ferdig-client-js/commit/fddeeb039797ed8b1f5ea5aabeec62e8e0e32d5e))
+
+
+### Miscellaneous
+
+* remove console log ([623c972](https://www.github.com/jappyjan/ferdig-client-js/commit/623c972a8066d7739e3a54999af40e4df48e8f04))
+
 ### [1.0.3](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.0.2...v1.0.3) (2021-06-30)
 
 
