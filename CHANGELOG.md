@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.0.1...v1.0.2) (2021-06-30)
+
+
+### Miscellaneous
+
+* better npm package name ([c25bdc1](https://www.github.com/jappyjan/ferdig-client-js/commit/c25bdc1b80c9190aff8e0495587f652f12531868))
+
 ### [1.0.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.0.0...v1.0.1) (2021-06-30)
 
 
