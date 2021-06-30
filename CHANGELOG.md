@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.3](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.2.2...v1.2.3) (2021-06-30)
+
+
+### Bug Fixes
+
+* making client.applications public ([45acd66](https://www.github.com/jappyjan/ferdig-client-js/commit/45acd6658e1bddafb2b6b4d4697852be4d0afe99))
+
 ### [1.2.2](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.2.1...v1.2.2) (2021-06-30)
 
 
