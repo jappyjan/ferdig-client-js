@@ -7,6 +7,9 @@
   "author": "Jan Jaap <mail@janjaap.de>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "axios": "^0.21.1"
   },
