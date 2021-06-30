@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.1.0...v1.2.0) (2021-06-30)
+
+
+### Features
+
+* added build script and .gitignore ([b674886](https://www.github.com/jappyjan/ferdig-client-js/commit/b674886d31e57dc0142f920279e137a689665c4a))
+
 ## [1.1.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.0.4...v1.1.0) (2021-06-30)
 
 
