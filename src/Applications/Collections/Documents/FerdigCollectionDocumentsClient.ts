@@ -1,5 +1,5 @@
-import ApiRequest, {HTTP_METHOD} from '../../ApiRequest';
-import {BasicCrudClient} from '../../BasicCrudClient';
+import {BasicCrudClient} from '../../../BasicCrudClient';
+import ApiRequest, {HTTP_METHOD} from '../../../ApiRequest';
 
 interface DefaultDocumentProperties {
     id: string;

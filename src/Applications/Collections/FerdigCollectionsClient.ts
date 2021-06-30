@@ -1,7 +1,7 @@
 import {FerdigCollectionDocumentsClient} from './Documents';
-import ApiRequest from '../ApiRequest';
-import {BasicCrudClient} from '../BasicCrudClient';
 import {FerdigCollection} from './FerdigCollection';
+import {BasicCrudClient} from '../../BasicCrudClient';
+import ApiRequest from '../../ApiRequest';
 
 interface CollectionCreateData {
     internalName: string;

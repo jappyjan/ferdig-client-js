@@ -1,17 +1,13 @@
-import {FerdigCollectionsClient} from './Collections';
 import ApiRequest, {ApiRequestConfig} from './ApiRequest';
-
-interface FerdigConfig extends ApiRequestConfig {
-    applicationId: string;
-}
+import {FerdigApplicationsClient} from './applications';
 
 export class FerdigClient {
-    public readonly collections: FerdigCollectionsClient;
     private readonly apiClient: ApiRequest;
+    private readonly applications: FerdigApplicationsClient;
 
-    public constructor(config: FerdigConfig) {
+    public constructor(config: ApiRequestConfig) {
         this.apiClient = new ApiRequest(config);
-        this.collections = new FerdigCollectionsClient(this.apiClient, config.applicationId);
+        this.applications = new FerdigApplicationsClient(this.apiClient);
     }
 
     public setToken(token: string | null) {
