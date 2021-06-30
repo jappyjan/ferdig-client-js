@@ -1,5 +1,5 @@
 {
-  "name": "ferdig-client-js",
+  "name": "@ferdig/client-js",
   "version": "1.0.1",
   "description": "A JS client for the Ferdig BaaS",
   "main": "index.js",
