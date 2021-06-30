@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.2.0...v1.2.1) (2021-06-30)
+
+
+### Miscellaneous
+
+* stuff ([7f5a39c](https://www.github.com/jappyjan/ferdig-client-js/commit/7f5a39caf562d37ea92d33b419fe6a2f04b83a43))
+
 ## [1.2.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.1.0...v1.2.0) (2021-06-30)
 
 
