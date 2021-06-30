@@ -1,5 +1,5 @@
 import ApiRequest, {ApiRequestConfig} from './ApiRequest';
-import {FerdigApplicationsClient} from './applications';
+import {FerdigApplicationsClient} from './Applications';
 
 export class FerdigClient {
     private readonly apiClient: ApiRequest;
