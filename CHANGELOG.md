@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.3.0...v1.3.1) (2021-06-30)
+
+
+### Bug Fixes
+
+* types for list requests ([f6612d7](https://www.github.com/jappyjan/ferdig-client-js/commit/f6612d743a325c49094b4bf982294c059b7dd22b))
+
 ## [1.3.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.2.3...v1.3.0) (2021-06-30)
 
 
