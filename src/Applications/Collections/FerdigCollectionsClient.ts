@@ -14,12 +14,11 @@ export interface FerdigCollectionListParams {
     };
 }
 
-export interface FerdigCollectionListResult {
-    collections: FerdigCollection[];
-    moreAvailable: number;
-}
+type ObjectTransformerInputType =
+    Omit<FerdigCollection, 'createdAt' | 'updatedAt'>
+    & { createdAt: string; updatedAt: string };
 
-export class FerdigCollectionsClient extends BasicCrudClient<FerdigCollection, FerdigCollectionCreateData, Partial<FerdigCollectionCreateData>, FerdigCollectionListParams, FerdigCollectionListResult> {
+export class FerdigCollectionsClient extends BasicCrudClient<FerdigCollection, FerdigCollectionCreateData, Partial<FerdigCollectionCreateData>, FerdigCollectionListParams> {
     private readonly applicationId: string;
 
     public constructor(api: ApiRequest, applicationId: string) {
@@ -27,6 +26,14 @@ export class FerdigCollectionsClient extends BasicCrudClient<FerdigCollection, F
         super(api, basePath);
 
         this.applicationId = applicationId;
+    }
+
+    protected async objectTransformer(object: ObjectTransformerInputType): Promise<FerdigCollection> {
+        return {
+            ...object,
+            createdAt: new Date(object.createdAt),
+            updatedAt: new Date(object.updatedAt),
+        };
     }
 
     public documents<DocumentType>(collectionId: string): FerdigCollectionDocumentsClient<DocumentType> {

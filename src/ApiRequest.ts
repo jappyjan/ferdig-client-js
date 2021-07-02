@@ -64,6 +64,11 @@ export default class ApiRequest {
             return response.data;
         } catch (e) {
             const axiosError = e as AxiosError;
+
+            if (!axiosError.response) {
+                throw e;
+            }
+
             const ferdigError = axiosError.response.data as FerdigApiErrorData;
             throw new FerdigApiError(ferdigError);
         }

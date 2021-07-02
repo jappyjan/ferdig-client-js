@@ -19,17 +19,18 @@ export interface FerdigCollectionDocumentsListPagination {
     take: number;
 }
 
-export interface FerdigCollectionDocumentsListResult<DocumentType> {
-    documents: DocumentType[];
-    moreAvailable: boolean;
-}
-
 export interface FerdigCollectionDocumentsListParams<DocumentType> {
     filter?: FerdigCollectionDocumentsListFilter<DocumentType, never>;
     pagination?: FerdigCollectionDocumentsListPagination;
 }
 
-export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClient<DocumentType & FerdigCollectionDocumentDefaultProperties, DocumentType, Partial<DocumentType>, FerdigCollectionDocumentsListParams<DocumentType>, FerdigCollectionDocumentsListResult<DocumentType>> {
+
+type ObjectTransformerInputType<DocumentType> =
+    Omit<FerdigCollectionDocumentDefaultProperties, 'createdAt' | 'updatedAt'>
+    & DocumentType
+    & { createdAt: string; updatedAt: string };
+
+export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClient<DocumentType & FerdigCollectionDocumentDefaultProperties, DocumentType, Partial<DocumentType>, FerdigCollectionDocumentsListParams<DocumentType>> {
     private readonly collectionId: string;
     private readonly applicationId: string;
 
@@ -39,5 +40,13 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
 
         this.collectionId = collectionId;
         this.applicationId = applicationId;
+    }
+
+    protected async objectTransformer(object: ObjectTransformerInputType<DocumentType>): Promise<DocumentType & FerdigCollectionDocumentDefaultProperties> {
+        return {
+            ...object,
+            createdAt: new Date(object.createdAt),
+            updatedAt: new Date(object.updatedAt),
+        };
     }
 }
