@@ -44,7 +44,7 @@ export abstract class BasicCrudClient<ReturnType, CreateType, UpdateType, ListPa
     public async list(params?: ListParams): Promise<ListResult> {
         return await this.api.request<ListResult>(
             HTTP_METHOD.POST,
-            `${this.basePath}`,
+            `${this.basePath}/list`,
             params,
         );
     }
