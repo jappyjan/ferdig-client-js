@@ -48,7 +48,7 @@ export default class ApiRequest {
             throw new Error('Please provide a host');
         }
 
-        this.axiosInstance.defaults.baseURL = host;
+        this.axiosInstance.defaults.baseURL = host + '/api';
 
         return this;
     }
