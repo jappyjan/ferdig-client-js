@@ -1,5 +1,5 @@
-export {FerdigCollectionsClient} from './FerdigCollectionsClient';
-export {FertigCollectionColumn} from './FertigCollectionColumn';
-export {FerdigCollection} from './FerdigCollection';
+export * from './FerdigCollectionsClient';
+export * from './FertigCollectionColumn';
+export * from './FerdigCollection';
 
 export * from './Documents';

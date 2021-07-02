@@ -3,21 +3,21 @@ import {BasicCrudClient} from '../BasicCrudClient';
 import {FerdigApplication} from './FerdigApplication';
 import {FerdigCollectionsClient} from './Collections';
 
-interface ApplicationCreateData {
+export interface FerdigApplicationCreateData {
     internalName: string;
 }
 
-interface ListParams {
+export interface FerdigApplicationListParams {
     skip: number;
     take: number;
 }
 
-interface ListResult {
+export interface FerdigApplicationListResult {
     applications: FerdigApplication[];
     moreAvailable: boolean;
 }
 
-export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication, ApplicationCreateData, Partial<ApplicationCreateData>, ListParams, ListResult> {
+export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication, FerdigApplicationCreateData, Partial<FerdigApplicationCreateData>, FerdigApplicationListParams, FerdigApplicationListResult> {
     public constructor(api: ApiRequest) {
         const basePath = `/applications`;
         super(api, basePath);

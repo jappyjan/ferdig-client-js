@@ -1,35 +1,35 @@
 import {BasicCrudClient} from '../../../BasicCrudClient';
 import ApiRequest from '../../../ApiRequest';
 
-interface DefaultDocumentProperties {
+export interface FerdigCollectionDocumentDefaultProperties {
     id: string;
     createdAt: Date;
     updatedAt: Date;
 }
 
-interface ListFilter<DocumentType, Property extends keyof DocumentType> {
+export interface FerdigCollectionDocumentsListFilter<DocumentType, Property extends keyof DocumentType> {
     property: Property;
     value: DocumentType[Property];
-    and: ListFilter<DocumentType, Property>[];
-    or: ListFilter<DocumentType, Property>[];
+    and: FerdigCollectionDocumentsListFilter<DocumentType, Property>[];
+    or: FerdigCollectionDocumentsListFilter<DocumentType, Property>[];
 }
 
-interface ListPagination {
+export interface FerdigCollectionDocumentsListPagination {
     skip: number;
     take: number;
 }
 
-interface ListResult<DocumentType> {
+export interface FerdigCollectionDocumentsListResult<DocumentType> {
     documents: DocumentType[];
     moreAvailable: boolean;
 }
 
-interface ListParams<DocumentType> {
-    filter?: ListFilter<DocumentType, never>;
-    pagination?: ListPagination;
+export interface FerdigCollectionDocumentsListParams<DocumentType> {
+    filter?: FerdigCollectionDocumentsListFilter<DocumentType, never>;
+    pagination?: FerdigCollectionDocumentsListPagination;
 }
 
-export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClient<DocumentType & DefaultDocumentProperties, DocumentType, Partial<DocumentType>, ListParams<DocumentType>, ListResult<DocumentType>> {
+export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClient<DocumentType & FerdigCollectionDocumentDefaultProperties, DocumentType, Partial<DocumentType>, FerdigCollectionDocumentsListParams<DocumentType>, FerdigCollectionDocumentsListResult<DocumentType>> {
     private readonly collectionId: string;
     private readonly applicationId: string;
 

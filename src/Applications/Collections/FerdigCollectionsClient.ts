@@ -3,15 +3,15 @@ import {FerdigCollection} from './FerdigCollection';
 import {BasicCrudClient} from '../../BasicCrudClient';
 import ApiRequest from '../../ApiRequest';
 
-interface CollectionCreateData {
+export interface FerdigCollectionCreateData {
     internalName: string;
 }
 
-interface ListParams {}
+export interface FerdigCollectionListParams {}
 
-interface ListResult {}
+export interface FerdigCollectionListResult {}
 
-export class FerdigCollectionsClient extends BasicCrudClient<FerdigCollection, CollectionCreateData, Partial<CollectionCreateData>, ListParams, ListResult> {
+export class FerdigCollectionsClient extends BasicCrudClient<FerdigCollection, FerdigCollectionCreateData, Partial<FerdigCollectionCreateData>, FerdigCollectionListParams, FerdigCollectionListResult> {
     private readonly applicationId: string;
 
     public constructor(api: ApiRequest, applicationId: string) {
