@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.3.1...v1.4.0) (2021-07-02)
+
+
+### Features
+
+* added missing applications properties ([cb60cd1](https://www.github.com/jappyjan/ferdig-client-js/commit/cb60cd1c7d3bed8f5fce46917553c22b0625cc88))
+
 ### [1.3.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.3.0...v1.3.1) (2021-06-30)
 
 
