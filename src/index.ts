@@ -1,2 +1,2 @@
-export {FerdigClient} from './FerdigClient';
-export {FerdigApplication} from './Applications';
+export * from './FerdigClient';
+export * from './Applications';
