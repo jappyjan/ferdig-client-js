@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.5.0...v1.6.0) (2021-07-02)
+
+
+### Features
+
+* list collections, applications, users ([98aa330](https://www.github.com/jappyjan/ferdig-client-js/commit/98aa330345f1c91214fd5aaf90ead28bb58eb7ab))
+
 ## [1.5.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.4.4...v1.5.0) (2021-07-02)
 
 
