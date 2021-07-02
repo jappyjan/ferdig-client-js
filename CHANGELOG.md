@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.4](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.4.3...v1.4.4) (2021-07-02)
+
+
+### Bug Fixes
+
+* export all interfaces ([0110e4b](https://www.github.com/jappyjan/ferdig-client-js/commit/0110e4b44a1cc13b0a6c1a4a35fb79be124761fa))
+
 ### [1.4.3](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.4.2...v1.4.3) (2021-07-02)
 
 
