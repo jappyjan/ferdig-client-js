@@ -1,16 +1,8 @@
-import ApiRequest, {HTTP_METHOD} from './ApiRequest';
+import {HTTP_METHOD} from './ApiRequest';
+import {BasicApiClient} from './BasicApiClient';
 
 
-export abstract class BasicCrudClient<ReturnType, CreateType, UpdateType, ListParams, ListResult> {
-    protected readonly api: ApiRequest;
-    protected readonly basePath: string;
-
-    protected constructor(api: ApiRequest, basePath: string) {
-        this.api = api;
-        this.basePath = basePath;
-    }
-
-
+export abstract class BasicCrudClient<ReturnType, CreateType, UpdateType, ListParams, ListResult> extends BasicApiClient {
     public async create(data: CreateType): Promise<ReturnType> {
         return await this.api.request<ReturnType>(
             HTTP_METHOD.POST,

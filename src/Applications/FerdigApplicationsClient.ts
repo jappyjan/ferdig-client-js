@@ -23,7 +23,7 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
         super(api, basePath);
     }
 
-    public collections(applicationId: string) {
+    public collections(applicationId: string): FerdigCollectionsClient {
         return new FerdigCollectionsClient(this.api, applicationId);
     }
 }

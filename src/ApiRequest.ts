@@ -1,4 +1,5 @@
-import Axios, {AxiosInstance} from 'axios';
+import Axios, {AxiosError, AxiosInstance} from 'axios';
+import {FerdigApiError, FerdigApiErrorData} from './FerdigApiError';
 
 export enum HTTP_METHOD {
     GET = 'GET',
@@ -23,7 +24,7 @@ export default class ApiRequest {
         }
     }
 
-    public doInitialConfig(config: ApiRequestConfig) {
+    public doInitialConfig(config: ApiRequestConfig): void {
         if (config.host) {
             this.setHost(config.host);
         }
@@ -33,17 +34,17 @@ export default class ApiRequest {
         }
     }
 
-    public setToken(token: string | null) {
+    public setToken(token: string | null): this {
         if (!token) {
             delete this.axiosInstance.defaults.headers.authorization;
-            return;
+            return this;
         }
         this.axiosInstance.defaults.headers.authorization = `Bearer ${token}`;
 
         return this;
     }
 
-    public setHost(host: string) {
+    public setHost(host: string): this {
         if (!host) {
             throw new Error('Please provide a host');
         }
@@ -53,13 +54,18 @@ export default class ApiRequest {
         return this;
     }
 
-    public async request<T>(method: HTTP_METHOD, path: string, payload?: Record<never, never>) {
-        const response = await this.axiosInstance.request<T>({
-            method,
-            url: path,
-            data: payload,
-        });
-
-        return response.data;
+    public async request<T>(method: HTTP_METHOD, path: string, payload?: Record<never, never>): Promise<T> {
+        try {
+            const response = await this.axiosInstance.request<T>({
+                method,
+                url: path,
+                data: payload,
+            });
+            return response.data;
+        } catch (e) {
+            const axiosError = e as AxiosError;
+            const ferdigError = axiosError.response.data as FerdigApiErrorData;
+            throw new FerdigApiError(ferdigError);
+        }
     }
 }

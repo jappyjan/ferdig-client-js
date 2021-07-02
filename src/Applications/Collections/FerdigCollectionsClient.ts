@@ -7,9 +7,17 @@ export interface FerdigCollectionCreateData {
     internalName: string;
 }
 
-export interface FerdigCollectionListParams {}
+export interface FerdigCollectionListParams {
+    pagination: {
+        skip: number;
+        take: number;
+    };
+}
 
-export interface FerdigCollectionListResult {}
+export interface FerdigCollectionListResult {
+    collections: FerdigCollection[];
+    moreAvailable: number;
+}
 
 export class FerdigCollectionsClient extends BasicCrudClient<FerdigCollection, FerdigCollectionCreateData, Partial<FerdigCollectionCreateData>, FerdigCollectionListParams, FerdigCollectionListResult> {
     private readonly applicationId: string;
@@ -21,7 +29,7 @@ export class FerdigCollectionsClient extends BasicCrudClient<FerdigCollection, F
         this.applicationId = applicationId;
     }
 
-    public documents(collectionId: string) {
-        return new FerdigCollectionDocumentsClient(this.api, this.applicationId, collectionId);
+    public documents<DocumentType>(collectionId: string): FerdigCollectionDocumentsClient<DocumentType> {
+        return new FerdigCollectionDocumentsClient<DocumentType>(this.api, this.applicationId, collectionId);
     }
 }
