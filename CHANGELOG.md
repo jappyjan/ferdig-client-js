@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.2](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.4.1...v1.4.2) (2021-07-02)
+
+
+### Bug Fixes
+
+* api host ([9c048b4](https://www.github.com/jappyjan/ferdig-client-js/commit/9c048b4d9483b5ef7ef7211ddf75271590bfd7da))
+
 ### [1.4.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.4.0...v1.4.1) (2021-07-02)
 
 
