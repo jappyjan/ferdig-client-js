@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.4.4...v1.5.0) (2021-07-02)
+
+
+### Features
+
+* eslint, error handling ([1e91fc3](https://www.github.com/jappyjan/ferdig-client-js/commit/1e91fc31c6222ae472e1cb077ed0480ef85fce9a))
+
+
+### Miscellaneous
+
+* gitignore ([46c90e4](https://www.github.com/jappyjan/ferdig-client-js/commit/46c90e40c9c94c794466bcd9ba03918b5908ec00))
+
 ### [1.4.4](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.4.3...v1.4.4) (2021-07-02)
 
 
