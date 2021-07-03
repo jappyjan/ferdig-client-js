@@ -7,11 +7,21 @@ export interface FerdigCollectionCreateData {
     internalName: string;
 }
 
+export enum ApplicationCollectionsSortableColumns {
+    internalName = 'internalName',
+    createdAt = 'createdAt',
+    updatedAt = 'updatedAt'
+}
+
 export interface FerdigCollectionListParams {
     pagination: {
         skip: number;
         take: number;
     };
+    sort?: {
+        column: ApplicationCollectionsSortableColumns;
+        descending: boolean;
+    } | null;
 }
 
 type ObjectTransformerInputType =

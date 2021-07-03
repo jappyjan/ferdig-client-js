@@ -3,11 +3,22 @@ import {FerdigUser} from '../../Shared-Interfaces';
 import {FerdigAuthSignupPayload} from '../../Auth';
 import ApiRequest from '../../ApiRequest';
 
+export enum ApplicationUsersSortableColumns {
+    email = 'email',
+    createdAt = 'createdAt',
+    updatedAt = 'updatedAt',
+    disabled = 'disabled',
+}
+
 export interface FerdigApplicationUsersListParams {
     pagination?: {
         skip: number;
         take: number;
-    }
+    };
+    sort?: {
+        column: ApplicationUsersSortableColumns;
+        descending: boolean;
+    } | null;
 }
 
 type ObjectTransformerInputType =
