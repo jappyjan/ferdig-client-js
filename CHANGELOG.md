@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.6.0...v1.7.0) (2021-07-03)
+
+
+### Features
+
+* list sorting ([4033578](https://www.github.com/jappyjan/ferdig-client-js/commit/403357885afa773599636f00e6853ee4e9fbcd57))
+* list sorting ([bd0b849](https://www.github.com/jappyjan/ferdig-client-js/commit/bd0b849672f7124abc2d4ac6b14dbae1a8d29622))
+
 ## [1.6.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.5.0...v1.6.0) (2021-07-02)
 
 
