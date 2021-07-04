@@ -1,5 +1,5 @@
 export * from './FerdigCollectionsClient';
 export * from './FertigCollectionColumn';
-export * from './FerdigCollection';
+export * from './FerdigApplicationCollection';
 
 export * from './Documents';

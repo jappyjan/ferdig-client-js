@@ -1,10 +1,40 @@
 import {FerdigCollectionDocumentsClient} from './Documents';
-import {FerdigCollection} from './FerdigCollection';
+import {FerdigApplicationCollection} from './FerdigApplicationCollection';
 import {BasicCrudClient} from '../../BasicCrudClient';
 import ApiRequest from '../../ApiRequest';
 
+export enum FerdigApplicationCollectionDocumentAccessRuleOperator {
+    EQUAL = 'EQUAL',
+    LESS = 'LESS',
+    LESS_OR_EQUAL = 'LESS_OR_EQUAL',
+    GREATER = 'GREATER',
+    GREATER_OR_EQUAL = 'GREATER_OR_EQUAL',
+    NOT_EQUAL = 'NOT_EQUAL',
+    NULL = 'NULL',
+}
+
+export interface FerdigApplicationCollectionDocumentAccessRule {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    leftSide: string;
+    operator: FerdigApplicationCollectionDocumentAccessRuleOperator;
+    rightSide: string;
+    and: FerdigApplicationCollectionDocumentAccessRule[];
+    or: FerdigApplicationCollectionDocumentAccessRule[];
+}
+
+type AccessRuleNonUserProperties = 'id' | 'createdAt' | 'updatedAt' | 'readAccessRule' | 'writeAccessRule';
+
+export type FerdigApplicationCollectionDocumentAccessRuleData = Omit<FerdigApplicationCollectionDocumentAccessRule, AccessRuleNonUserProperties> & {
+    or: FerdigApplicationCollectionDocumentAccessRuleData[];
+    and: FerdigApplicationCollectionDocumentAccessRuleData[];
+}
+
 export interface FerdigCollectionCreateData {
     internalName: string;
+    readAccessRule: FerdigApplicationCollectionDocumentAccessRuleData;
+    writeAccessRule: FerdigApplicationCollectionDocumentAccessRuleData;
 }
 
 export enum ApplicationCollectionsSortableColumns {
@@ -25,10 +55,10 @@ export interface FerdigCollectionListParams {
 }
 
 type ObjectTransformerInputType =
-    Omit<FerdigCollection, 'createdAt' | 'updatedAt'>
+    Omit<FerdigApplicationCollection, 'createdAt' | 'updatedAt'>
     & { createdAt: string; updatedAt: string };
 
-export class FerdigCollectionsClient extends BasicCrudClient<FerdigCollection, FerdigCollectionCreateData, Partial<FerdigCollectionCreateData>, FerdigCollectionListParams> {
+export class FerdigCollectionsClient extends BasicCrudClient<FerdigApplicationCollection, FerdigCollectionCreateData, Partial<FerdigCollectionCreateData>, FerdigCollectionListParams> {
     private readonly applicationId: string;
 
     public constructor(api: ApiRequest, applicationId: string) {
@@ -38,7 +68,7 @@ export class FerdigCollectionsClient extends BasicCrudClient<FerdigCollection, F
         this.applicationId = applicationId;
     }
 
-    protected async objectTransformer(object: ObjectTransformerInputType): Promise<FerdigCollection> {
+    protected async objectTransformer(object: ObjectTransformerInputType): Promise<FerdigApplicationCollection> {
         return {
             ...object,
             createdAt: new Date(object.createdAt),

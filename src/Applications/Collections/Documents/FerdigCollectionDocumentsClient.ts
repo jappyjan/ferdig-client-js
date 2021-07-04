@@ -20,8 +20,8 @@ export interface FerdigCollectionDocumentsListPagination {
 }
 
 export interface FerdigCollectionDocumentsListParams<DocumentType> {
-    filter?: FerdigCollectionDocumentsListFilter<DocumentType, never>;
-    pagination?: FerdigCollectionDocumentsListPagination;
+    filter: FerdigCollectionDocumentsListFilter<DocumentType, never> | null;
+    pagination: FerdigCollectionDocumentsListPagination | null;
 }
 
 
@@ -35,7 +35,7 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
     private readonly applicationId: string;
 
     public constructor(api: ApiRequest, applicationId: string, collectionId: string) {
-        const basePath = `/collections/${collectionId}/documents`;
+        const basePath = `/applications/${applicationId}/collections/${collectionId}/documents`;
         super(api, basePath)
 
         this.collectionId = collectionId;
