@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.8.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.8.0...v1.8.1) (2021-07-05)
+
+
+### Bug Fixes
+
+* added missing props ([3cee58f](https://www.github.com/jappyjan/ferdig-client-js/commit/3cee58fa08ca0c2f429dfd51368b2f5d1ab0e351))
+
 ## [1.8.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.7.0...v1.8.0) (2021-07-04)
 
 
