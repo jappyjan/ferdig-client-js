@@ -1,4 +1,5 @@
 import {FerdigApplicationCollectionColumn} from './FerdigApplicationCollectionColumn';
+import {FerdigApplicationCollectionDocumentAccessRule} from './FerdigCollectionsClient';
 
 export interface FerdigApplicationCollection {
     id: string;
@@ -6,4 +7,6 @@ export interface FerdigApplicationCollection {
     createdAt: Date;
     updatedAt: Date;
     columns: FerdigApplicationCollectionColumn[];
+    readAccessRule: FerdigApplicationCollectionDocumentAccessRule;
+    writeAccessRule: FerdigApplicationCollectionDocumentAccessRule;
 }
