@@ -2,6 +2,7 @@ import {FerdigCollectionDocumentsClient} from './Documents';
 import {FerdigApplicationCollection} from './FerdigApplicationCollection';
 import {BasicCrudClient} from '../../BasicCrudClient';
 import ApiRequest from '../../ApiRequest';
+import {FerdigCollectionColumnsClient} from './Columns/FerdigCollectionColumnsClient';
 
 export enum FerdigApplicationCollectionDocumentAccessRuleOperator {
     EQUAL = 'EQUAL',
@@ -78,5 +79,9 @@ export class FerdigCollectionsClient extends BasicCrudClient<FerdigApplicationCo
 
     public documents<DocumentType>(collectionId: string): FerdigCollectionDocumentsClient<DocumentType> {
         return new FerdigCollectionDocumentsClient<DocumentType>(this.api, this.applicationId, collectionId);
+    }
+
+    public columns(collectionId: string): FerdigCollectionColumnsClient {
+        return new FerdigCollectionColumnsClient(this.api, this.applicationId, collectionId);
     }
 }
