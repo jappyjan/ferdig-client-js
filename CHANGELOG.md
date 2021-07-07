@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.8.1...v1.9.0) (2021-07-06)
+
+
+### Features
+
+* added FerdigCollectionColumnsClient.ts ([42c90d0](https://www.github.com/jappyjan/ferdig-client-js/commit/42c90d0f69384150733c52a1073c21eb3b68f3a7))
+
 ### [1.8.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.8.0...v1.8.1) (2021-07-05)
 
 
