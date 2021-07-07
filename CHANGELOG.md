@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.9.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.9.0...v1.9.1) (2021-07-07)
+
+
+### Bug Fixes
+
+* refactoring broke stuff ([29cd773](https://www.github.com/jappyjan/ferdig-client-js/commit/29cd773f7e188d7cff7b37df58937b22621f097f))
+
 ## [1.9.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.8.1...v1.9.0) (2021-07-06)
 
 
