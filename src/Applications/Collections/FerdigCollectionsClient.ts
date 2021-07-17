@@ -85,6 +85,6 @@ export class FerdigCollectionsClient extends BasicCrudClient<FerdigApplicationCo
     }
 
     public columns(collectionId: string): FerdigCollectionColumnsClient {
-        return new FerdigCollectionColumnsClient(this.api, this.applicationId, collectionId);
+        return new FerdigCollectionColumnsClient(this.api, this.socket, this.applicationId, collectionId);
     }
 }

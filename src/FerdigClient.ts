@@ -14,7 +14,7 @@ export class FerdigClient {
         this.socketClient = new SocketClient(config);
 
         this.applications = new FerdigApplicationsClient(this.apiClient, this.socketClient);
-        this.auth = new FerdigAuthClient(this.apiClient);
+        this.auth = new FerdigAuthClient(this.apiClient, this.socketClient);
     }
 
 
