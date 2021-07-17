@@ -2,6 +2,7 @@ import {BasicCrudClient} from '../../BasicCrudClient';
 import {FerdigUser} from '../../Shared-Interfaces';
 import {FerdigAuthSignupPayload} from '../../Auth';
 import ApiRequest from '../../ApiRequest';
+import {SocketClient} from '../../Socket';
 
 export enum ApplicationUsersSortableColumns {
     email = 'email',
@@ -28,9 +29,9 @@ type ObjectTransformerInputType =
 export class FerdigApplicationUsersClient extends BasicCrudClient<FerdigUser, FerdigAuthSignupPayload, unknown, FerdigApplicationUsersListParams> {
     private readonly applicationId: string;
 
-    public constructor(api: ApiRequest, applicationId: string) {
+    public constructor(api: ApiRequest, socket: SocketClient, applicationId: string) {
         const basePath = `/applications/${applicationId}/users`;
-        super(api, basePath);
+        super(api, socket, basePath);
         this.applicationId = applicationId;
     }
 

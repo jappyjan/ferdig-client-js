@@ -2,7 +2,8 @@ import ApiRequest from '../ApiRequest';
 import {BasicCrudClient} from '../BasicCrudClient';
 import {FerdigApplication} from './FerdigApplication';
 import {FerdigCollectionsClient} from './Collections';
-import {FerdigApplicationUsersClient} from './Users/FerdigApplicationUsersClient';
+import {FerdigApplicationUsersClient} from './Users';
+import {SocketClient} from '../Socket';
 
 export interface FerdigApplicationCreateData {
     internalName: string;
@@ -18,9 +19,9 @@ type ObjectTransformerInputType =
     & { createdAt: string; updatedAt: string };
 
 export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication, FerdigApplicationCreateData, Partial<FerdigApplicationCreateData>, FerdigApplicationListParams> {
-    public constructor(api: ApiRequest) {
+    public constructor(api: ApiRequest, socket: SocketClient) {
         const basePath = `/applications`;
-        super(api, basePath);
+        super(api, socket, basePath);
     }
 
     protected async objectTransformer(object: ObjectTransformerInputType): Promise<FerdigApplication> {
@@ -32,10 +33,10 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
     }
 
     public collections(applicationId: string): FerdigCollectionsClient {
-        return new FerdigCollectionsClient(this.api, applicationId);
+        return new FerdigCollectionsClient(this.api, this.socket, applicationId);
     }
 
     public users(applicationId: string): FerdigApplicationUsersClient {
-        return new FerdigApplicationUsersClient(this.api, applicationId);
+        return new FerdigApplicationUsersClient(this.api, this.socket, applicationId);
     }
 }
