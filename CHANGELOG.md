@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.10.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.10.0...v1.10.1) (2021-07-17)
+
+
+### Bug Fixes
+
+* type errors ([f843362](https://www.github.com/jappyjan/ferdig-client-js/commit/f843362032eff6f5ce0ed1c35f62e970c7366e6c))
+
 ## [1.10.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.9.1...v1.10.0) (2021-07-17)
 
 
