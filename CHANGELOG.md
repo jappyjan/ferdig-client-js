@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.9.1...v1.10.0) (2021-07-17)
+
+
+### Features
+
+* **collections:** observers / also removed node_modules from git ([05557a4](https://www.github.com/jappyjan/ferdig-client-js/commit/05557a451b7edc97d4e29bd059b9186b7f50e471))
+
 ### [1.9.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.9.0...v1.9.1) (2021-07-07)
 
 
