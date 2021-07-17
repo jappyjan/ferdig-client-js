@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.10.2](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.10.1...v1.10.2) (2021-07-17)
+
+
+### Miscellaneous
+
+* export BasicCrudClient exports ([207d625](https://www.github.com/jappyjan/ferdig-client-js/commit/207d6252f8dadccb7a12e43160e8cdcf4ed927da))
+
 ### [1.10.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.10.0...v1.10.1) (2021-07-17)
 
 
