@@ -1,4 +1,4 @@
-import {FerdigApplicationCollectionDocumentAccessRule} from './FerdigCollectionsClient';
+import {FerdigApplicationCollectionDocumentAccessRule} from './FerdigApplicationCollectionsClient';
 
 export enum FerdigApplicationCollectionColumnValueType {
     String = 'string',

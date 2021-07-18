@@ -1,9 +1,10 @@
 import ApiRequest, {ApiRequestConfig} from '../ApiRequest';
 import {BasicCrudClient} from '../BasicCrudClient';
 import {FerdigApplication} from './FerdigApplication';
-import {FerdigCollectionsClient} from './Collections';
+import {FerdigApplicationCollectionsClient} from './Collections';
 import {FerdigApplicationUsersClient} from './Users';
 import {BehaviorSubject} from 'rxjs';
+import {FerdigApplicationAutomationsClient} from './Automations';
 
 export interface FerdigApplicationCreateData {
     internalName: string;
@@ -20,7 +21,8 @@ type ObjectTransformerInputType =
 
 export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication, FerdigApplicationCreateData, Partial<FerdigApplicationCreateData>, FerdigApplicationListParams> {
     private readonly config: BehaviorSubject<ApiRequestConfig>;
-    private readonly collectionsClientInstances: Map<string, FerdigCollectionsClient>;
+    private readonly collectionsClientInstances: Map<string, FerdigApplicationCollectionsClient>;
+    private readonly automationsClientInstances: Map<string, FerdigApplicationAutomationsClient>;
     private readonly usersClientInstances: Map<string, FerdigApplicationUsersClient>;
 
     public constructor(api: ApiRequest, config: BehaviorSubject<ApiRequestConfig>) {
@@ -28,8 +30,9 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
         super(api, basePath);
 
         this.config = config;
-        this.collectionsClientInstances = new Map<string, FerdigCollectionsClient>();
+        this.collectionsClientInstances = new Map<string, FerdigApplicationCollectionsClient>();
         this.usersClientInstances = new Map<string, FerdigApplicationUsersClient>();
+        this.automationsClientInstances = new Map<string, FerdigApplicationAutomationsClient>();
     }
 
     protected async objectTransformer(object: ObjectTransformerInputType): Promise<FerdigApplication> {
@@ -40,11 +43,21 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
         };
     }
 
-    public collections(applicationId: string): FerdigCollectionsClient {
+    public collections(applicationId: string): FerdigApplicationCollectionsClient {
         let client = this.collectionsClientInstances.get(applicationId);
         if (!client) {
-            client = new FerdigCollectionsClient(this.api, this.config, applicationId);
+            client = new FerdigApplicationCollectionsClient(this.api, this.config, applicationId);
             this.collectionsClientInstances.set(applicationId, client)
+        }
+
+        return client;
+    }
+
+    public automations(applicationId: string): FerdigApplicationAutomationsClient {
+        let client = this.automationsClientInstances.get(applicationId);
+        if (!client) {
+            client = new FerdigApplicationAutomationsClient(this.api, this.config, applicationId);
+            this.automationsClientInstances.set(applicationId, client)
         }
 
         return client;

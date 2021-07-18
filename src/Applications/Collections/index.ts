@@ -1,4 +1,4 @@
-export * from './FerdigCollectionsClient';
+export * from './FerdigApplicationCollectionsClient';
 export * from './FerdigApplicationCollectionColumn';
 export * from './FerdigApplicationCollection';
 

@@ -1,5 +1,5 @@
 import {FerdigApplicationCollectionColumn} from './FerdigApplicationCollectionColumn';
-import {FerdigApplicationCollectionDocumentAccessRule} from './FerdigCollectionsClient';
+import {FerdigApplicationCollectionDocumentAccessRule} from './FerdigApplicationCollectionsClient';
 
 export interface FerdigApplicationCollection {
     id: string;

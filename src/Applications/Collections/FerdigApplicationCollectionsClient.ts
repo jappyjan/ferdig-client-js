@@ -62,7 +62,7 @@ type ObjectTransformerInputType =
     Omit<FerdigApplicationCollection, 'createdAt' | 'updatedAt'>
     & { createdAt: string; updatedAt: string };
 
-export class FerdigCollectionsClient extends BasicCrudClient<FerdigApplicationCollection, FerdigCollectionCreateData, Partial<FerdigCollectionCreateData>, FerdigCollectionListParams> {
+export class FerdigApplicationCollectionsClient extends BasicCrudClient<FerdigApplicationCollection, FerdigCollectionCreateData, Partial<FerdigCollectionCreateData>, FerdigCollectionListParams> {
     private readonly applicationId: string;
     private readonly config: BehaviorSubject<ApiRequestConfig>;
     private readonly documentsClientInstances: Map<string, FerdigCollectionDocumentsClient<unknown>>;

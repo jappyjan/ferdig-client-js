@@ -4,7 +4,7 @@ import {
 } from '../FerdigApplicationCollectionColumn';
 import {BasicCrudClient} from '../../../BasicCrudClient';
 import ApiRequest from '../../../ApiRequest';
-import {FerdigApplicationCollectionDocumentAccessRuleData} from '../FerdigCollectionsClient';
+import {FerdigApplicationCollectionDocumentAccessRuleData} from '../FerdigApplicationCollectionsClient';
 
 export interface FerdigCollectionColumnCreateData {
     internalName: string;
