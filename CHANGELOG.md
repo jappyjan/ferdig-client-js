@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.10.2...v1.11.0) (2021-07-18)
+
+
+### Features
+
+* **collections:** live updates ([302323b](https://www.github.com/jappyjan/ferdig-client-js/commit/302323bdaf1a93d1cdabffe1bc44094fea39d2a6))
+
 ### [1.10.2](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.10.1...v1.10.2) (2021-07-17)
 
 
