@@ -1,5 +1,5 @@
 import {BasicCrudClient, FerdigListResult} from '../../../BasicCrudClient';
-import ApiRequest from '../../../ApiRequest';
+import ApiRequest, {ApiRequestConfig} from '../../../ApiRequest';
 import {SocketClient} from '../../../Socket';
 import {BehaviorSubject, finalize} from 'rxjs';
 
@@ -32,20 +32,32 @@ type ObjectTransformerInputType<DocumentType> =
     & { createdAt: string; updatedAt: string };
 
 interface WildcardDocumentChangeEvent<DocumentType> {
-    id: string;
+    identifier: {
+        applicationId: string;
+        collectionId: string;
+        documentId: string;
+    };
     document: DocumentType;
 }
 
 export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClient<DocumentType & FerdigCollectionDocumentDefaultProperties, DocumentType, Partial<DocumentType>, FerdigCollectionDocumentsListParams<DocumentType>> {
     private readonly collectionId: string;
     private readonly applicationId: string;
+    protected readonly socket: SocketClient;
 
-    public constructor(api: ApiRequest, socket: SocketClient, applicationId: string, collectionId: string) {
+    public constructor(
+        api: ApiRequest,
+        config: BehaviorSubject<ApiRequestConfig>,
+        applicationId: string,
+        collectionId: string,
+    ) {
         const basePath = `/applications/${applicationId}/collections/${collectionId}/documents`;
-        super(api, socket, basePath)
+        super(api, basePath)
 
         this.collectionId = collectionId;
         this.applicationId = applicationId;
+
+        this.socket = new SocketClient(config, 'applications/collections/documents');
     }
 
     protected async objectTransformer(object: ObjectTransformerInputType<DocumentType>): Promise<DocumentType & FerdigCollectionDocumentDefaultProperties> {
@@ -69,7 +81,7 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
         };
 
         documentSubject.pipe(
-            finalize(() => this.socket.off(eventName, onChange))
+            finalize(() => this.socket.off(eventName, onChange)),
         );
 
         this.socket.on(
@@ -96,16 +108,22 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
         const result = await super.list(params);
         const resultSubject = new BehaviorSubject(result);
 
-        const eventName = `application/${this.applicationId}/collections/${this.collectionId}/documents/*`;
+        const eventName = `applications/${this.applicationId}/collections/${this.collectionId}/documents/*`;
+        console.log('listening for event', eventName);
 
         const onChange = (event: WildcardDocumentChangeEvent<DocumentType & FerdigCollectionDocumentDefaultProperties>) => {
-            // TODO: filter by params.filter
+            if (event.identifier.applicationId !== this.applicationId || event.identifier.collectionId !== this.collectionId) {
+                return;
+            }
 
+            console.log('received change event', event);
+
+            // TODO: filter by params.filter
             const items: Array<DocumentType & FerdigCollectionDocumentDefaultProperties> = [];
 
             let found = false;
             resultSubject.value.items.forEach((item) => {
-                if (event.id === item.id) {
+                if (event.identifier.documentId === item.id) {
                     found = true;
                     if (event.document === null) {
                         return;
@@ -128,7 +146,7 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
         };
 
         resultSubject.pipe(
-            finalize(() => this.socket.off(eventName, onChange))
+            finalize(() => this.socket.off(eventName, onChange)),
         );
 
         this.socket.on(

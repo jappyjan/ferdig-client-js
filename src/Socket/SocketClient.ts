@@ -1,16 +1,25 @@
 import {io as IO, Socket} from 'socket.io-client';
+import {BehaviorSubject} from 'rxjs';
 
 interface Config {
     host?: string;
     token?: string;
+    namespace?: string;
 }
 
 export class SocketClient {
     private io: Socket | null = null;
     private config: Config;
 
-    public constructor(config: Config) {
-        this.config = config;
+    public constructor(configObserver: BehaviorSubject<Config>, namespaceName: string) {
+        configObserver.subscribe((config) => {
+            this.config = {
+                ...config,
+                namespace: namespaceName,
+            };
+            this.init();
+        });
+
         this.init();
     }
 
@@ -21,33 +30,29 @@ export class SocketClient {
             this.io = null;
         }
 
-        if (!this.config.host) {
+        if (!this.config.host || !this.config.namespace) {
+            console.warn('socket no host or namespace', this.config);
             return;
         }
 
-        let options: {auth: {token: string}};
+        let options: { auth: { token: string } };
         if (this.config.token) {
             options = {
                 auth: {
-                    token: this.config.token
-                }
+                    token: this.config.token,
+                },
             }
         }
 
-        this.io = IO(this.config.host, options);
+        const socketUrl = `${this.config.host}/${this.config.namespace}`;
+        this.io = IO(socketUrl, options);
+        this.io.on('connected', () => console.info('socket connected'));
     }
 
-    public setHost(host: string): void {
-        this.config.host = host;
-        this.init()
-    }
-
-    public setToken(token: string): void {
-        this.config.token = token;
-        this.init()
-    }
-
-    public on(eventName: string, callback: (...args: unknown[]) => unknown): void {
+    public on(
+        eventName: string,
+        callback: (...args: unknown[]) => unknown,
+    ): void {
         this.io.on(eventName, callback);
     }
 

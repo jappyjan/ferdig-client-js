@@ -1,9 +1,9 @@
 import {FerdigCollectionDocumentsClient} from './Documents';
 import {FerdigApplicationCollection} from './FerdigApplicationCollection';
 import {BasicCrudClient} from '../../BasicCrudClient';
-import ApiRequest from '../../ApiRequest';
+import ApiRequest, {ApiRequestConfig} from '../../ApiRequest';
 import {FerdigCollectionColumnsClient} from './Columns/FerdigCollectionColumnsClient';
-import {SocketClient} from '../../Socket';
+import {BehaviorSubject} from 'rxjs';
 
 export enum FerdigApplicationCollectionDocumentAccessRuleOperator {
     EQUAL = 'EQUAL',
@@ -64,12 +64,18 @@ type ObjectTransformerInputType =
 
 export class FerdigCollectionsClient extends BasicCrudClient<FerdigApplicationCollection, FerdigCollectionCreateData, Partial<FerdigCollectionCreateData>, FerdigCollectionListParams> {
     private readonly applicationId: string;
+    private readonly config: BehaviorSubject<ApiRequestConfig>;
+    private readonly documentsClientInstances: Map<string, FerdigCollectionDocumentsClient<unknown>>;
+    private readonly columnsClientInstances: Map<string, FerdigCollectionColumnsClient>;
 
-    public constructor(api: ApiRequest, socket: SocketClient, applicationId: string) {
+    public constructor(api: ApiRequest, config: BehaviorSubject<ApiRequestConfig>, applicationId: string) {
         const basePath = `/applications/${applicationId}/collections`;
-        super(api, socket, basePath);
+        super(api, basePath);
 
         this.applicationId = applicationId;
+        this.config = config;
+        this.documentsClientInstances = new Map<string, FerdigCollectionDocumentsClient<unknown>>();
+        this.columnsClientInstances = new Map<string, FerdigCollectionColumnsClient>();
     }
 
     protected async objectTransformer(object: ObjectTransformerInputType): Promise<FerdigApplicationCollection> {
@@ -81,10 +87,22 @@ export class FerdigCollectionsClient extends BasicCrudClient<FerdigApplicationCo
     }
 
     public documents<DocumentType>(collectionId: string): FerdigCollectionDocumentsClient<DocumentType> {
-        return new FerdigCollectionDocumentsClient<DocumentType>(this.api, this.socket, this.applicationId, collectionId);
+        let client = this.documentsClientInstances.get(collectionId) as FerdigCollectionDocumentsClient<DocumentType>;
+        if (!client) {
+            client = new FerdigCollectionDocumentsClient<DocumentType>(this.api, this.config, this.applicationId, collectionId);
+            this.documentsClientInstances.set(collectionId, client)
+        }
+
+        return client;
     }
 
     public columns(collectionId: string): FerdigCollectionColumnsClient {
-        return new FerdigCollectionColumnsClient(this.api, this.socket, this.applicationId, collectionId);
+        let client = this.columnsClientInstances.get(collectionId);
+        if (!client) {
+            client = new FerdigCollectionColumnsClient(this.api, this.applicationId, collectionId);
+            this.columnsClientInstances.set(collectionId, client)
+        }
+
+        return client;
     }
 }

@@ -1,9 +1,9 @@
-import ApiRequest from '../ApiRequest';
+import ApiRequest, {ApiRequestConfig} from '../ApiRequest';
 import {BasicCrudClient} from '../BasicCrudClient';
 import {FerdigApplication} from './FerdigApplication';
 import {FerdigCollectionsClient} from './Collections';
 import {FerdigApplicationUsersClient} from './Users';
-import {SocketClient} from '../Socket';
+import {BehaviorSubject} from 'rxjs';
 
 export interface FerdigApplicationCreateData {
     internalName: string;
@@ -19,9 +19,17 @@ type ObjectTransformerInputType =
     & { createdAt: string; updatedAt: string };
 
 export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication, FerdigApplicationCreateData, Partial<FerdigApplicationCreateData>, FerdigApplicationListParams> {
-    public constructor(api: ApiRequest, socket: SocketClient) {
+    private readonly config: BehaviorSubject<ApiRequestConfig>;
+    private readonly collectionsClientInstances: Map<string, FerdigCollectionsClient>;
+    private readonly usersClientInstances: Map<string, FerdigApplicationUsersClient>;
+
+    public constructor(api: ApiRequest, config: BehaviorSubject<ApiRequestConfig>) {
         const basePath = `/applications`;
-        super(api, socket, basePath);
+        super(api, basePath);
+
+        this.config = config;
+        this.collectionsClientInstances = new Map<string, FerdigCollectionsClient>();
+        this.usersClientInstances = new Map<string, FerdigApplicationUsersClient>();
     }
 
     protected async objectTransformer(object: ObjectTransformerInputType): Promise<FerdigApplication> {
@@ -33,10 +41,22 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
     }
 
     public collections(applicationId: string): FerdigCollectionsClient {
-        return new FerdigCollectionsClient(this.api, this.socket, applicationId);
+        let client = this.collectionsClientInstances.get(applicationId);
+        if (!client) {
+            client = new FerdigCollectionsClient(this.api, this.config, applicationId);
+            this.collectionsClientInstances.set(applicationId, client)
+        }
+
+        return client;
     }
 
     public users(applicationId: string): FerdigApplicationUsersClient {
-        return new FerdigApplicationUsersClient(this.api, this.socket, applicationId);
+        let client = this.usersClientInstances.get(applicationId);
+        if (!client) {
+            client = new FerdigApplicationUsersClient(this.api, applicationId);
+            this.usersClientInstances.set(applicationId, client)
+        }
+
+        return client;
     }
 }

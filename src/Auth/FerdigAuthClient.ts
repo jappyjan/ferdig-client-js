@@ -1,7 +1,6 @@
 import {BasicApiClient} from '../BasicApiClient';
 import ApiRequest, {HTTP_METHOD} from '../ApiRequest';
 import {FerdigUser} from '../Shared-Interfaces';
-import {SocketClient} from '../Socket';
 
 export interface FerdigAuthSignupPayload {
     email: string;
@@ -19,9 +18,9 @@ export interface FerdigUserWithSessionToken extends FerdigUser{
 }
 
 export class FerdigAuthClient extends BasicApiClient {
-    public constructor(api: ApiRequest, socket: SocketClient) {
+    public constructor(api: ApiRequest) {
         const basePath = '/auth'
-        super(api, socket, basePath);
+        super(api, basePath);
     }
 
     public async signUp(data: FerdigAuthSignupPayload): Promise<FerdigUser> {
