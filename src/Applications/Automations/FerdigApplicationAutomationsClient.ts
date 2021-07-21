@@ -2,9 +2,21 @@ import {BasicCrudClient} from '../../BasicCrudClient';
 import ApiRequest, {ApiRequestConfig} from '../../ApiRequest';
 import {BehaviorSubject} from 'rxjs';
 import {FerdigApplicationAutomation} from './FerdigApplicationAutomation';
+import {FerdigApplicationAutomationFlowNodeType} from './FerdigApplicationAutomationFlowNode';
 
 export interface FerdigApplicationAutomationCreateData {
     internalName: string;
+}
+
+export interface FerdigApplicationAutomationFlowNodeCreateData {
+    id: string;
+    parentId: string | null;
+    type: FerdigApplicationAutomationFlowNodeType;
+}
+
+export interface FerdigApplicationAutomationUpdateData {
+    internalName: string;
+    flowNodes: FerdigApplicationAutomationFlowNodeCreateData[];
 }
 
 export enum FerdigApplicationAutomationSortableColumns {
@@ -28,7 +40,7 @@ type ObjectTransformerInputType =
     Omit<FerdigApplicationAutomation, 'createdAt' | 'updatedAt'>
     & { createdAt: string; updatedAt: string };
 
-export class FerdigApplicationAutomationsClient extends BasicCrudClient<FerdigApplicationAutomation, FerdigApplicationAutomationCreateData, Partial<FerdigApplicationAutomationCreateData>, FerdigApplicationAutomationListParams> {
+export class FerdigApplicationAutomationsClient extends BasicCrudClient<FerdigApplicationAutomation, FerdigApplicationAutomationCreateData, FerdigApplicationAutomationUpdateData, FerdigApplicationAutomationListParams> {
     private readonly applicationId: string;
     private readonly config: BehaviorSubject<ApiRequestConfig>;
 
