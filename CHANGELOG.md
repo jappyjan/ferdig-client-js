@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.11.0...v1.12.0) (2021-07-21)
+
+
+### Features
+
+* **automations:** added client for automations ([d0604ad](https://www.github.com/jappyjan/ferdig-client-js/commit/d0604ad80be8b61bd67f02060f230d7063ebc349))
+* **automations:** create, read, update ([6518d9a](https://www.github.com/jappyjan/ferdig-client-js/commit/6518d9a9300b8be9c9167dc9f18119ce78f87055))
+
 ## [1.11.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.10.2...v1.11.0) (2021-07-18)
 
 
