@@ -53,10 +53,18 @@ export class SocketClient {
         eventName: string,
         callback: (...args: unknown[]) => unknown,
     ): void {
+        if (!this.io) {
+            return;
+        }
+
         this.io.on(eventName, callback);
     }
 
     public off(eventName?: string, listener?: (...args: unknown[]) => unknown): void {
+        if (!this.io) {
+            return;
+        }
+
         this.io.off(eventName, listener);
     }
 }
