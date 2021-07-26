@@ -5,6 +5,7 @@ import {FerdigApplicationCollectionsClient} from './Collections';
 import {FerdigApplicationUsersClient} from './Users';
 import {BehaviorSubject} from 'rxjs';
 import {FerdigApplicationAutomationsClient} from './Automations';
+import {FerdigApplicationNotificationTemplatesClient} from './NotificationTemplates';
 
 export interface FerdigApplicationCreateData {
     internalName: string;
@@ -23,6 +24,7 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
     private readonly config: BehaviorSubject<ApiRequestConfig>;
     private readonly collectionsClientInstances: Map<string, FerdigApplicationCollectionsClient>;
     private readonly automationsClientInstances: Map<string, FerdigApplicationAutomationsClient>;
+    private readonly notificationTemplatesClientInstances: Map<string, FerdigApplicationNotificationTemplatesClient>;
     private readonly usersClientInstances: Map<string, FerdigApplicationUsersClient>;
 
     public constructor(api: ApiRequest, config: BehaviorSubject<ApiRequestConfig>) {
@@ -33,6 +35,7 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
         this.collectionsClientInstances = new Map<string, FerdigApplicationCollectionsClient>();
         this.usersClientInstances = new Map<string, FerdigApplicationUsersClient>();
         this.automationsClientInstances = new Map<string, FerdigApplicationAutomationsClient>();
+        this.notificationTemplatesClientInstances = new Map<string, FerdigApplicationNotificationTemplatesClient>();
     }
 
     protected async objectTransformer(object: ObjectTransformerInputType): Promise<FerdigApplication> {
@@ -58,6 +61,16 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
         if (!client) {
             client = new FerdigApplicationAutomationsClient(this.api, this.config, applicationId);
             this.automationsClientInstances.set(applicationId, client)
+        }
+
+        return client;
+    }
+
+    public notificationTemplates(applicationId: string): FerdigApplicationNotificationTemplatesClient {
+        let client = this.notificationTemplatesClientInstances.get(applicationId);
+        if (!client) {
+            client = new FerdigApplicationNotificationTemplatesClient(this.api, this.config, applicationId);
+            this.notificationTemplatesClientInstances.set(applicationId, client)
         }
 
         return client;
