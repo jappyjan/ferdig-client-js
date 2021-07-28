@@ -3,4 +3,5 @@ export interface FerdigApplication {
     internalName: string;
     createdAt: Date;
     updatedAt: Date;
+    logo: string;
 }

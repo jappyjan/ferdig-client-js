@@ -3,23 +3,16 @@ import ApiRequest, {ApiRequestConfig} from '../../ApiRequest';
 import {BehaviorSubject} from 'rxjs';
 import {FerdigApplicationNotificationTemplate} from './FerdigApplicationNotificationTemplate';
 
-export interface FerdigApplicationNotificationTemplateActionCreateData {
-    url: string;
-    label: string;
-}
-
 export interface FerdigApplicationNotificationTemplateCreateData {
     internalName: string;
     subject: string;
     body: string;
-    actions: FerdigApplicationNotificationTemplateActionCreateData[];
 }
 
 export interface FerdigApplicationNotificationTemplateUpdateData {
     internalName: string;
     subject: string;
     body: string;
-    actions: FerdigApplicationNotificationTemplateActionCreateData[];
 }
 
 export enum FerdigApplicationNotificationTemplateSortableColumns {

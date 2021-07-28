@@ -12,11 +12,13 @@ export abstract class BasicCrudClient<ReturnType, CreateType, UpdateType, ListPa
     }
 
     public async create(data: CreateType): Promise<ReturnType> {
-        return await this.api.request<ReturnType>(
+        const application = await this.api.request<ReturnType>(
             HTTP_METHOD.POST,
             this.basePath,
             data,
         );
+
+        return this.objectTransformer(application);
     }
 
     public async update(id: string, data: UpdateType): Promise<ReturnType> {
