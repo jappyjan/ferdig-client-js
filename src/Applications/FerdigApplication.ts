@@ -1,7 +1,14 @@
-export interface FerdigApplication {
+export interface FerdigApplicationConfiguration {
     id: string;
-    internalName: string;
     createdAt: Date;
     updatedAt: Date;
-    logo: string;
+    loginRequiresValidEmail: boolean;
+}
+
+export interface FerdigApplication {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    internalName: string;
+    configuration: FerdigApplicationConfiguration;
 }

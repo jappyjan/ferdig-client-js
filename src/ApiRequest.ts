@@ -1,9 +1,10 @@
-import Axios, {AxiosError, AxiosInstance} from 'axios';
+import Axios, {AxiosError, AxiosInstance, ResponseType} from 'axios';
 import {FerdigApiError, FerdigApiErrorData} from './FerdigApiError';
 
 export enum HTTP_METHOD {
     GET = 'GET',
     POST = 'POST',
+    PATCH = 'PATCH',
     PUT = 'PUT',
     'DELETE' = 'DELETE'
 }
@@ -54,12 +55,13 @@ export default class ApiRequest {
         return this;
     }
 
-    public async request<T>(method: HTTP_METHOD, path: string, payload?: Record<never, never>): Promise<T> {
+    public async request<T>(method: HTTP_METHOD, path: string, payload?: Record<never, never>, responseType?: ResponseType): Promise<T> {
         try {
             const response = await this.axiosInstance.request<T>({
                 method,
                 url: path,
                 data: payload,
+                responseType,
             });
             return response.data;
         } catch (e) {
