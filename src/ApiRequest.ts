@@ -14,6 +14,14 @@ export interface ApiRequestConfig {
     token?: string;
 }
 
+interface RequestParams {
+    method: HTTP_METHOD;
+    path: string;
+    payload?: Record<never, never>;
+    responseType?: ResponseType;
+    contentType?: string;
+}
+
 export default class ApiRequest {
     private readonly axiosInstance: AxiosInstance;
 
@@ -55,13 +63,20 @@ export default class ApiRequest {
         return this;
     }
 
-    public async request<T>(method: HTTP_METHOD, path: string, payload?: Record<never, never>, responseType?: ResponseType): Promise<T> {
+    public async request<T>({method, path, payload, responseType, contentType}: RequestParams): Promise<T> {
+        const headers: Record<string, string> = {};
+
+        if (contentType) {
+            headers['Content-Type'] = 'multipart/form-data';
+        }
+
         try {
             const response = await this.axiosInstance.request<T>({
                 method,
                 url: path,
                 data: payload,
                 responseType,
+                headers,
             });
             return response.data;
         } catch (e) {

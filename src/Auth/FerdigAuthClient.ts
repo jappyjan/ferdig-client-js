@@ -25,17 +25,13 @@ export class FerdigAuthClient extends BasicApiClient {
 
     public async signUp(data: FerdigAuthSignupPayload): Promise<FerdigUser> {
         return await this.api.request<FerdigUser>(
-            HTTP_METHOD.POST,
-            `${this.basePath}/signup`,
-            data,
+            {method : HTTP_METHOD.POST, path : `${this.basePath}/signup`, payload : data},
         );
     }
 
     public async startSession(data: FerdigAuthStartSessionPayload, updateToken = true): Promise<FerdigUserWithSessionToken> {
         const response = await this.api.request<FerdigUserWithSessionToken>(
-            HTTP_METHOD.POST,
-            `${this.basePath}/sessions`,
-            data,
+            {method : HTTP_METHOD.POST, path : `${this.basePath}/sessions`, payload : data},
         );
 
         if (updateToken) {
@@ -47,8 +43,7 @@ export class FerdigAuthClient extends BasicApiClient {
 
     public async getCurrentUser(): Promise<FerdigUser> {
         return await this.api.request<FerdigUserWithSessionToken>(
-            HTTP_METHOD.GET,
-            `${this.basePath}/sessions/current`,
+            {method : HTTP_METHOD.GET, path : `${this.basePath}/sessions/current`},
         );
     }
 }

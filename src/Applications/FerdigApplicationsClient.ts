@@ -2,14 +2,28 @@ import ApiRequest, {ApiRequestConfig, HTTP_METHOD} from '../ApiRequest';
 import {BasicCrudClient} from '../BasicCrudClient';
 import {FerdigApplication} from './FerdigApplication';
 import {FerdigApplicationCollectionsClient} from './Collections';
-import {FerdigApplicationUsersClient} from './Users';
 import {BehaviorSubject} from 'rxjs';
 import {FerdigApplicationAutomationsClient} from './Automations';
 import {FerdigApplicationNotificationTemplatesClient} from './NotificationTemplates';
 import {FerdigApplicationConfigurationClient} from './Config';
 
+export interface FerdigApplicationConfigurationEmailCreateData {
+    host: string;
+    port: number;
+    ssl: boolean;
+    authUser: string;
+    authPassword: string;
+    fromName: string;
+    fromAddress: string;
+}
+
+export interface FerdigApplicationConfigurationCreateData {
+    email: FerdigApplicationConfigurationEmailCreateData;
+}
+
 export interface FerdigApplicationCreateData {
     internalName: string;
+    configuration: FerdigApplicationConfigurationCreateData;
 }
 
 export interface FerdigApplicationListParams {
@@ -26,7 +40,6 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
     private readonly collectionsClientInstances: Map<string, FerdigApplicationCollectionsClient>;
     private readonly automationsClientInstances: Map<string, FerdigApplicationAutomationsClient>;
     private readonly notificationTemplatesClientInstances: Map<string, FerdigApplicationNotificationTemplatesClient>;
-    private readonly usersClientInstances: Map<string, FerdigApplicationUsersClient>;
     private readonly configurationClientInstances: Map<string, FerdigApplicationConfigurationClient>;
 
     public constructor(api: ApiRequest, config: BehaviorSubject<ApiRequestConfig>) {
@@ -35,7 +48,6 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
 
         this.config = config;
         this.collectionsClientInstances = new Map<string, FerdigApplicationCollectionsClient>();
-        this.usersClientInstances = new Map<string, FerdigApplicationUsersClient>();
         this.automationsClientInstances = new Map<string, FerdigApplicationAutomationsClient>();
         this.notificationTemplatesClientInstances = new Map<string, FerdigApplicationNotificationTemplatesClient>();
         this.configurationClientInstances = new Map<string, FerdigApplicationConfigurationClient>();
@@ -79,16 +91,6 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
         return client;
     }
 
-    public users(applicationId: string): FerdigApplicationUsersClient {
-        let client = this.usersClientInstances.get(applicationId);
-        if (!client) {
-            client = new FerdigApplicationUsersClient(this.api, applicationId);
-            this.usersClientInstances.set(applicationId, client)
-        }
-
-        return client;
-    }
-
     public configuration(applicationId: string): FerdigApplicationConfigurationClient {
         let client = this.configurationClientInstances.get(applicationId);
         if (!client) {
@@ -101,10 +103,7 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
 
     public async getLogo(applicationId: string): Promise<Blob> {
         return await this.api.request<Blob>(
-            HTTP_METHOD.GET,
-            `${this.basePath}/${applicationId}/logo`,
-            undefined,
-            'blob',
+            {method : HTTP_METHOD.GET, path : `${this.basePath}/${applicationId}/logo`, payload : undefined, responseType : 'blob'},
         );
     }
 }

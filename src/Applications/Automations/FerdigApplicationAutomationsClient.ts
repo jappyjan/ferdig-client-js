@@ -86,8 +86,7 @@ export class FerdigApplicationAutomationsClient extends BasicCrudClient<FerdigAp
     // TODO: move to sub client
     public async getLogsOfNode(automationId: string, nodeId: string): Promise<FerdigApplicationAutomationFlowNodeLog[]> {
         return await this.api.request<FerdigApplicationAutomationFlowNodeLog[]>(
-            HTTP_METHOD.GET,
-            `${this.basePath}/${automationId}/nodes/${nodeId}/logs`,
+            {method : HTTP_METHOD.GET, path : `${this.basePath}/${automationId}/nodes/${nodeId}/logs`},
         );
     }
 }

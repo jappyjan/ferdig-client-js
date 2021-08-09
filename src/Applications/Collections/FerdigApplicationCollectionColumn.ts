@@ -5,6 +5,7 @@ export enum FerdigApplicationCollectionColumnValueType {
     Number = 'number',
     Date = 'date',
     Boolean = 'boolean',
+    File = 'file',
 }
 
 export interface FerdigApplicationCollectionColumn {

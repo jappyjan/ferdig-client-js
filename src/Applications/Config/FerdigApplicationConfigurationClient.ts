@@ -12,11 +12,9 @@ export class FerdigApplicationConfigurationClient extends BasicApiClient {
 
     public async setLoginRequiresValidEmail(value: boolean): Promise<void> {
         await this.api.request(
-            HTTP_METHOD.PATCH,
-            this.basePath,
-            {
+            {method : HTTP_METHOD.PATCH, path : this.basePath, payload : {
                 loginRequiresValidEmail: value,
-            },
+            }},
         );
     }
 }

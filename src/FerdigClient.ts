@@ -9,7 +9,7 @@ export class FerdigClient {
     public readonly auth: FerdigAuthClient;
     private readonly apiClient: ApiRequest;
     private readonly config: BehaviorSubject<ApiRequestConfig>;
-    private readonly users: FerdigUsersClient;
+    public readonly users: FerdigUsersClient;
 
     public constructor(config: ApiRequestConfig) {
         this.apiClient = new ApiRequest(config);
@@ -19,7 +19,6 @@ export class FerdigClient {
         this.auth = new FerdigAuthClient(this.apiClient);
         this.users = new FerdigUsersClient(this.apiClient);
     }
-
 
     public setToken(token: string | null): this {
         this.apiClient.setToken(token);

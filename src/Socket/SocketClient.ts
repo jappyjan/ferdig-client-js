@@ -46,7 +46,6 @@ export class SocketClient {
 
         const socketUrl = `${this.config.host}/${this.config.namespace}`;
         this.io = IO(socketUrl, options);
-        this.io.on('connected', () => console.info('socket connected'));
     }
 
     public on(

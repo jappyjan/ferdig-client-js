@@ -1,7 +1,9 @@
 import {BasicCrudClient, FerdigListResult} from '../../../BasicCrudClient';
-import ApiRequest, {ApiRequestConfig} from '../../../ApiRequest';
+import ApiRequest, {ApiRequestConfig, HTTP_METHOD} from '../../../ApiRequest';
 import {SocketClient} from '../../../Socket';
 import {BehaviorSubject, finalize} from 'rxjs';
+import {FerdigApplicationCollectionsClient} from '../FerdigApplicationCollectionsClient';
+import {FerdigApplicationCollectionColumnValueType} from '../FerdigApplicationCollectionColumn';
 
 export interface FerdigCollectionDocumentDefaultProperties {
     id: string;
@@ -44,6 +46,7 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
     private readonly collectionId: string;
     private readonly applicationId: string;
     protected readonly socket: SocketClient;
+    private readonly collectionsClient: FerdigApplicationCollectionsClient;
 
     public constructor(
         api: ApiRequest,
@@ -56,16 +59,31 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
 
         this.collectionId = collectionId;
         this.applicationId = applicationId;
+        this.collectionsClient = new FerdigApplicationCollectionsClient(api, config, applicationId);
 
         this.socket = new SocketClient(config, 'applications/collections/documents');
     }
 
     protected async objectTransformer(object: ObjectTransformerInputType<DocumentType>): Promise<DocumentType & FerdigCollectionDocumentDefaultProperties> {
-        return {
+        // TODO: make collections reactive (like documents) and replace this with an observable
+        const collection = await this.collectionsClient.get(this.collectionId);
+
+        const transformed: DocumentType & FerdigCollectionDocumentDefaultProperties = {
             ...object,
+            id: object.id,
             createdAt: new Date(object.createdAt),
             updatedAt: new Date(object.updatedAt),
         };
+
+        collection.columns.forEach((column) => {
+            if (column.valueType !== FerdigApplicationCollectionColumnValueType.Date) {
+                return;
+            }
+
+            transformed[column.internalName] = new Date(object[column.internalName]);
+        });
+
+        return transformed;
     }
 
     private observeOne(document: DocumentType & FerdigCollectionDocumentDefaultProperties) {
@@ -73,8 +91,11 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
 
         const eventName = `application/${this.applicationId}/collections/${this.collectionId}/documents/${document.id}`;
 
-        const onChange = (document: null | DocumentType & FerdigCollectionDocumentDefaultProperties) => {
-            documentSubject.next(document);
+        const onChange = async (document: null | ObjectTransformerInputType<DocumentType>) => {
+            const transformedDocument = document === null ? null : await this.objectTransformer(document);
+
+            documentSubject.next(transformedDocument);
+
             if (document === null) {
                 documentSubject.complete();
             }
@@ -92,8 +113,44 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
         return documentSubject;
     }
 
+    public async create(data: DocumentType): Promise<DocumentType & FerdigCollectionDocumentDefaultProperties> {
+        const formData = new FormData();
+
+        Object.keys(data).forEach((key) => {
+            formData.set(key, data[key]);
+        });
+
+        const rawDocument: ObjectTransformerInputType<DocumentType> = await this.api.request({
+                method: HTTP_METHOD.POST,
+                path: this.basePath,
+                payload: formData,
+                contentType: 'multipart/form-data',
+            },
+        );
+
+        return this.objectTransformer(rawDocument);
+    }
+
+    public async update(id: string, data: Partial<DocumentType>): Promise<DocumentType & FerdigCollectionDocumentDefaultProperties> {
+        const formData = new FormData();
+
+        Object.keys(data).forEach((key) => {
+            formData.set(key, data[key]);
+        });
+
+        const rawDocument = await this.api.request<ObjectTransformerInputType<DocumentType>>({
+                method: HTTP_METHOD.PUT,
+                path: `${this.basePath}/${id}`,
+                payload: formData,
+                contentType: 'multipart/form-data',
+            },
+        );
+
+        return this.objectTransformer(rawDocument);
+    }
+
     public async createAndObserve(data: DocumentType): Promise<BehaviorSubject<DocumentType & FerdigCollectionDocumentDefaultProperties>> {
-        const document = await super.create(data);
+        const document = await this.create(data);
         return this.observeOne(document);
     }
 
@@ -109,14 +166,13 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
         const resultSubject = new BehaviorSubject(result);
 
         const eventName = `applications/${this.applicationId}/collections/${this.collectionId}/documents/*`;
-        console.log('listening for event', eventName);
 
-        const onChange = (event: WildcardDocumentChangeEvent<DocumentType & FerdigCollectionDocumentDefaultProperties>) => {
+        const onChange = async (event: WildcardDocumentChangeEvent<ObjectTransformerInputType<DocumentType>>) => {
             if (event.identifier.applicationId !== this.applicationId || event.identifier.collectionId !== this.collectionId) {
                 return;
             }
 
-            console.log('received change event', event);
+            const transformedDocument = await this.objectTransformer(event.document);
 
             // TODO: filter by params.filter
             const items: Array<DocumentType & FerdigCollectionDocumentDefaultProperties> = [];
@@ -129,14 +185,14 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
                         return;
                     }
 
-                    items.push(event.document);
+                    items.push(transformedDocument);
                     return;
                 }
 
                 items.push(item);
             });
             if (!found && event.document !== null) {
-                items.push(event.document);
+                items.push(transformedDocument);
             }
 
             resultSubject.next({
