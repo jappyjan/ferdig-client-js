@@ -54,7 +54,7 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends AbstractSocke
         const basePath = `/applications/${applicationId}/collections/${collectionId}/documents`;
 
         const socketNameSpace = 'applications/collections/documents';
-        const socketChangeEventBaseName = `applications/${applicationId}/collections/${collectionId}/documents`;
+        const socketChangeEventName = `applications/collections/documents::change`;
         const socketChangeEventFilter = (identifier: SocketChangeEventIdentifier) => {
             return (
                 identifier.applicationId === applicationId &&
@@ -73,7 +73,7 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends AbstractSocke
             config,
             basePath,
             socketNameSpace,
-            socketChangeEventBaseName,
+            socketChangeEventName,
             socketChangeEventFilter,
             socketChangeEventItemMatcher,
         );

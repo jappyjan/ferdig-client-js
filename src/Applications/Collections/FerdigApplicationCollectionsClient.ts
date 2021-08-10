@@ -7,7 +7,6 @@ import {
 } from './Columns/FerdigCollectionColumnsClient';
 import {BehaviorSubject, finalize} from 'rxjs';
 import {AbstractSocketCrudClient, SocketChangeEvent} from '../../AbstractSocketCrudClient';
-import {SocketClient} from '../../Socket';
 import {FerdigListResult} from '../../BasicCrudClient';
 import {FerdigApplicationCollectionColumn} from './FerdigApplicationCollectionColumn';
 
@@ -89,13 +88,12 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
     private readonly config: BehaviorSubject<ApiRequestConfig>;
     private readonly documentsClientInstances: Map<string, FerdigCollectionDocumentsClient<unknown>>;
     private readonly columnsClientInstances: Map<string, FerdigCollectionColumnsClient>;
-    private readonly columnsSocket: SocketClient;
 
     public constructor(api: ApiRequest, config: BehaviorSubject<ApiRequestConfig>, applicationId: string) {
         const basePath = `/applications/${applicationId}/collections`;
 
         const socketNameSpace = 'applications/collections';
-        const socketChangeEventBaseName = `applications/${applicationId}/collections`;
+        const socketChangeEventName = `applications/collections::change`;
         const socketChangeEventFilter = (identifier: SocketChangeEventIdentifier) => {
             return identifier.applicationId === applicationId;
         };
@@ -111,7 +109,7 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
             config,
             basePath,
             socketNameSpace,
-            socketChangeEventBaseName,
+            socketChangeEventName,
             socketChangeEventFilter,
             socketChangeEventItemMatcher,
         );
@@ -120,8 +118,6 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
         this.config = config;
         this.documentsClientInstances = new Map<string, FerdigCollectionDocumentsClient<unknown>>();
         this.columnsClientInstances = new Map<string, FerdigCollectionColumnsClient>();
-
-        this.columnsSocket = new SocketClient(config, 'applications/collections/documents/columns');
     }
 
     protected async objectTransformer(object: ObjectTransformerInputType): Promise<FerdigApplicationCollection> {
@@ -159,18 +155,11 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
     }
 
     protected observeOne(collection: FerdigApplicationCollection): BehaviorSubject<FerdigApplicationCollection | null> {
-        console.log('in modified observeOne');
         const subject = super.observeOne(collection);
-
-        const columnChangeEventName = `applications/${this.applicationId}/collections/${collection.id}/columns/*`;
-        if (columnChangeEventName === 'applications/d04c31cb-4a7c-4f55-b223-437316c457cd/collections/4ca017f7-baa7-4a43-80e6-a7aaf9573db6/columns/*') {
-            console.log('listening to', columnChangeEventName);
-        }
 
         const collectionsClient = this.columns(collection.id);
 
         const onChangeColumn = async (event: SocketChangeEvent<FerdigCollectionColumnsClientObjectTransformerInputType, SocketChangeEventColumnIdentifier>) => {
-            console.log('received column change', event);
             const {item, identifier} = event;
 
             if (
@@ -208,18 +197,19 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
             });
         };
 
-        if (columnChangeEventName === 'applications/d04c31cb-4a7c-4f55-b223-437316c457cd/collections/4ca017f7-baa7-4a43-80e6-a7aaf9573db6/columns/*') {
-            console.log('setting up listener');
-        }
-        this.columnsSocket.on(
-            columnChangeEventName,
-            onChangeColumn,
+        const COLUMN_CHANGE_EVENT_NAME = 'applications/collections/columns::change';
+
+        this.socket.on(
+            COLUMN_CHANGE_EVENT_NAME,
+            onChangeColumn.bind(this),
         );
 
         subject.pipe(
             finalize(() => {
-                console.warn('closing socket');
-                this.columnsSocket.off(columnChangeEventName, onChangeColumn)
+                this.socket.off(
+                    COLUMN_CHANGE_EVENT_NAME,
+                    onChangeColumn,
+                );
             }),
         );
 
@@ -271,7 +261,7 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
 
                 newCollections.push({
                     ...collection,
-                    columns: newColumns
+                    columns: newColumns,
                 });
             });
 
@@ -281,13 +271,13 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
             });
         };
 
-        this.columnsSocket.on(
+        this.socket.on(
             columnChangeEventName,
             onChangeColumn,
         );
 
         listSubject.pipe(
-            finalize(() => this.columnsSocket.off(columnChangeEventName, onChangeColumn)),
+            finalize(() => this.socket.off(columnChangeEventName, onChangeColumn)),
         );
 
         return listSubject;

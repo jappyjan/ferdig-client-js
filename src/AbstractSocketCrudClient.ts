@@ -10,7 +10,7 @@ export interface SocketChangeEvent<ItemType extends { id: string }, IdentifierTy
 
 export abstract class AbstractSocketCrudClient<ReturnType extends { id: string }, CreateType, UpdateType, ListParams, SocketChangeEventIdentifierType> extends BasicCrudClient<ReturnType, CreateType, UpdateType, ListParams> {
     protected readonly socket: SocketClient;
-    private readonly socketChangeEventBaseName: string;
+    private readonly socketChangeEventName: string;
     private readonly socketChangeEventFilter: (identifier: SocketChangeEventIdentifierType) => boolean;
     private readonly socketChangeEventItemMatcher: (identifier: SocketChangeEventIdentifierType, item: ReturnType) => boolean;
 
@@ -19,22 +19,20 @@ export abstract class AbstractSocketCrudClient<ReturnType extends { id: string }
         config: BehaviorSubject<ApiRequestConfig>,
         basePath: string,
         socketNameSpace: string,
-        socketChangeEventBaseName: string,
+        socketChangeEventName: string,
         socketChangeEventFilter: (identifier: SocketChangeEventIdentifierType) => boolean,
         socketChangeEventItemMatcher: (identifier: SocketChangeEventIdentifierType, item: ReturnType) => boolean,
     ) {
         super(api, basePath);
 
         this.socket = new SocketClient(config, socketNameSpace);
-        this.socketChangeEventBaseName = socketChangeEventBaseName;
+        this.socketChangeEventName = socketChangeEventName;
         this.socketChangeEventFilter = socketChangeEventFilter;
         this.socketChangeEventItemMatcher = socketChangeEventItemMatcher;
     }
 
     protected observeOne(item: ReturnType): BehaviorSubject<ReturnType | null> {
         const subject = new BehaviorSubject(item);
-
-        const eventName = `${this.socketChangeEventBaseName}/${item.id}`;
 
         const onChange = async (event: SocketChangeEvent<ReturnType, SocketChangeEventIdentifierType>) => {
             const {item} = event;
@@ -49,11 +47,16 @@ export abstract class AbstractSocketCrudClient<ReturnType extends { id: string }
         };
 
         subject.pipe(
-            finalize(() => this.socket.off(eventName, onChange)),
+            finalize(() => {
+                this.socket.off(
+                    this.socketChangeEventName,
+                    onChange,
+                );
+            }),
         );
 
         this.socket.on(
-            eventName,
+            this.socketChangeEventName,
             onChange,
         );
 
@@ -76,8 +79,6 @@ export abstract class AbstractSocketCrudClient<ReturnType extends { id: string }
     ): Promise<BehaviorSubject<FerdigListResult<ReturnType>>> {
         const result = await this.list(params);
         const resultSubject = new BehaviorSubject(result);
-
-        const eventName = `${this.socketChangeEventBaseName}/*`;
 
         const onChange = async (event: SocketChangeEvent<ReturnType, SocketChangeEventIdentifierType>) => {
             if (!this.socketChangeEventFilter(event.identifier)) {
@@ -115,11 +116,16 @@ export abstract class AbstractSocketCrudClient<ReturnType extends { id: string }
         };
 
         resultSubject.pipe(
-            finalize(() => this.socket.off(eventName, onChange)),
+            finalize(() => {
+                this.socket.off(
+                    this.socketChangeEventName,
+                    onChange
+                );
+            }),
         );
 
         this.socket.on(
-            eventName,
+            this.socketChangeEventName,
             onChange,
         );
 
