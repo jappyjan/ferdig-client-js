@@ -1,9 +1,9 @@
-import {BasicCrudClient, FerdigListResult} from '../../../BasicCrudClient';
 import ApiRequest, {ApiRequestConfig, HTTP_METHOD} from '../../../ApiRequest';
-import {SocketClient} from '../../../Socket';
-import {BehaviorSubject, finalize} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {FerdigApplicationCollectionsClient} from '../FerdigApplicationCollectionsClient';
 import {FerdigApplicationCollectionColumnValueType} from '../FerdigApplicationCollectionColumn';
+import {AbstractSocketCrudClient} from '../../../AbstractSocketCrudClient';
+import {FerdigApplicationCollection} from '../FerdigApplicationCollection';
 
 export interface FerdigCollectionDocumentDefaultProperties {
     id: string;
@@ -33,20 +33,17 @@ type ObjectTransformerInputType<DocumentType> =
     & DocumentType
     & { createdAt: string; updatedAt: string };
 
-interface WildcardDocumentChangeEvent<DocumentType> {
-    identifier: {
-        applicationId: string;
-        collectionId: string;
-        documentId: string;
-    };
-    document: DocumentType;
+interface SocketChangeEventIdentifier {
+    applicationId: string;
+    collectionId: string;
+    documentId: string;
 }
 
-export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClient<DocumentType & FerdigCollectionDocumentDefaultProperties, DocumentType, Partial<DocumentType>, FerdigCollectionDocumentsListParams<DocumentType>> {
+export class FerdigCollectionDocumentsClient<DocumentType> extends AbstractSocketCrudClient<DocumentType & FerdigCollectionDocumentDefaultProperties, DocumentType, Partial<DocumentType>, FerdigCollectionDocumentsListParams<DocumentType>, SocketChangeEventIdentifier> {
     private readonly collectionId: string;
     private readonly applicationId: string;
-    protected readonly socket: SocketClient;
     private readonly collectionsClient: FerdigApplicationCollectionsClient;
+    private readonly collections: Map<string, BehaviorSubject<FerdigApplicationCollection>>;
 
     public constructor(
         api: ApiRequest,
@@ -55,18 +52,50 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
         collectionId: string,
     ) {
         const basePath = `/applications/${applicationId}/collections/${collectionId}/documents`;
-        super(api, basePath)
+
+        const socketNameSpace = 'applications/collections/documents';
+        const socketChangeEventBaseName = `applications/${applicationId}/collections/${collectionId}/documents`;
+        const socketChangeEventFilter = (identifier: SocketChangeEventIdentifier) => {
+            return (
+                identifier.applicationId === applicationId &&
+                identifier.collectionId === collectionId
+            );
+        };
+        const socketChangeEventItemMatcher = (
+            identifier: SocketChangeEventIdentifier,
+            item: DocumentType & FerdigCollectionDocumentDefaultProperties,
+        ) => {
+            return identifier.documentId === item.id;
+        }
+
+        super(
+            api,
+            config,
+            basePath,
+            socketNameSpace,
+            socketChangeEventBaseName,
+            socketChangeEventFilter,
+            socketChangeEventItemMatcher,
+        );
 
         this.collectionId = collectionId;
         this.applicationId = applicationId;
         this.collectionsClient = new FerdigApplicationCollectionsClient(api, config, applicationId);
+        this.collections = new Map<string, BehaviorSubject<FerdigApplicationCollection>>();
+    }
 
-        this.socket = new SocketClient(config, 'applications/collections/documents');
+    private async getCollection(collectionId: string) {
+        let collectionSubject = this.collections.get(collectionId);
+        if (!collectionSubject) {
+            collectionSubject = await this.collectionsClient.getAndObserve(collectionId);
+            this.collections.set(collectionId, collectionSubject);
+        }
+
+        return collectionSubject.value;
     }
 
     protected async objectTransformer(object: ObjectTransformerInputType<DocumentType>): Promise<DocumentType & FerdigCollectionDocumentDefaultProperties> {
-        // TODO: make collections reactive (like documents) and replace this with an observable
-        const collection = await this.collectionsClient.get(this.collectionId);
+        const collection = await this.getCollection(this.collectionId);
 
         const transformed: DocumentType & FerdigCollectionDocumentDefaultProperties = {
             ...object,
@@ -84,33 +113,6 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
         });
 
         return transformed;
-    }
-
-    private observeOne(document: DocumentType & FerdigCollectionDocumentDefaultProperties) {
-        const documentSubject = new BehaviorSubject(document);
-
-        const eventName = `application/${this.applicationId}/collections/${this.collectionId}/documents/${document.id}`;
-
-        const onChange = async (document: null | ObjectTransformerInputType<DocumentType>) => {
-            const transformedDocument = document === null ? null : await this.objectTransformer(document);
-
-            documentSubject.next(transformedDocument);
-
-            if (document === null) {
-                documentSubject.complete();
-            }
-        };
-
-        documentSubject.pipe(
-            finalize(() => this.socket.off(eventName, onChange)),
-        );
-
-        this.socket.on(
-            eventName,
-            onChange,
-        );
-
-        return documentSubject;
     }
 
     public async create(data: DocumentType): Promise<DocumentType & FerdigCollectionDocumentDefaultProperties> {
@@ -147,69 +149,5 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends BasicCrudClie
         );
 
         return this.objectTransformer(rawDocument);
-    }
-
-    public async createAndObserve(data: DocumentType): Promise<BehaviorSubject<DocumentType & FerdigCollectionDocumentDefaultProperties>> {
-        const document = await this.create(data);
-        return this.observeOne(document);
-    }
-
-    public async getAndObserve(id: string): Promise<BehaviorSubject<DocumentType & FerdigCollectionDocumentDefaultProperties>> {
-        const document = await super.get(id);
-        return this.observeOne(document);
-    }
-
-    public async listAndObserve(
-        params: FerdigCollectionDocumentsListParams<DocumentType>,
-    ): Promise<BehaviorSubject<FerdigListResult<DocumentType & FerdigCollectionDocumentDefaultProperties>>> {
-        const result = await super.list(params);
-        const resultSubject = new BehaviorSubject(result);
-
-        const eventName = `applications/${this.applicationId}/collections/${this.collectionId}/documents/*`;
-
-        const onChange = async (event: WildcardDocumentChangeEvent<ObjectTransformerInputType<DocumentType>>) => {
-            if (event.identifier.applicationId !== this.applicationId || event.identifier.collectionId !== this.collectionId) {
-                return;
-            }
-
-            const transformedDocument = await this.objectTransformer(event.document);
-
-            // TODO: filter by params.filter
-            const items: Array<DocumentType & FerdigCollectionDocumentDefaultProperties> = [];
-
-            let found = false;
-            resultSubject.value.items.forEach((item) => {
-                if (event.identifier.documentId === item.id) {
-                    found = true;
-                    if (event.document === null) {
-                        return;
-                    }
-
-                    items.push(transformedDocument);
-                    return;
-                }
-
-                items.push(item);
-            });
-            if (!found && event.document !== null) {
-                items.push(transformedDocument);
-            }
-
-            resultSubject.next({
-                ...resultSubject.value,
-                items,
-            });
-        };
-
-        resultSubject.pipe(
-            finalize(() => this.socket.off(eventName, onChange)),
-        );
-
-        this.socket.on(
-            eventName,
-            onChange,
-        );
-
-        return resultSubject;
     }
 }

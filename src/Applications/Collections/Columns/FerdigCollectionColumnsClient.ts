@@ -14,7 +14,7 @@ export interface FerdigCollectionColumnCreateData {
     writeAccessRule: FerdigApplicationCollectionDocumentAccessRuleData;
 }
 
-interface ObjectTransformerInputType extends Omit<FerdigApplicationCollectionColumn, 'createdAt' | 'updatedAt'> {
+export interface FerdigCollectionColumnsClientObjectTransformerInputType extends Omit<FerdigApplicationCollectionColumn, 'createdAt' | 'updatedAt'> {
     createdAt: string;
     updatedAt: string;
 }
@@ -25,7 +25,7 @@ export class FerdigCollectionColumnsClient extends BasicCrudClient<FerdigApplica
         super(api, basePath);
     }
 
-    protected async objectTransformer(object: ObjectTransformerInputType): Promise<FerdigApplicationCollectionColumn> {
+    public async objectTransformer(object: FerdigCollectionColumnsClientObjectTransformerInputType): Promise<FerdigApplicationCollectionColumn> {
         return {
             ...object,
             createdAt: new Date(object.createdAt),
