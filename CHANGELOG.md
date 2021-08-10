@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.13.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.12.0...v1.13.0) (2021-08-10)
+
+
+### Features
+
+* **automations:** get logs ([f801ce5](https://www.github.com/jappyjan/ferdig-client-js/commit/f801ce5d09fd8a5b9c596a57c9e0f67cd8412dd1))
+* **collections:** realtime collections and columns ([34b4ad6](https://www.github.com/jappyjan/ferdig-client-js/commit/34b4ad679fe51212bc63493a83498f0777d560f9))
+* config client ([fd656ec](https://www.github.com/jappyjan/ferdig-client-js/commit/fd656eccedfd2c03916a206e2a8e1bb5ff4afd2a))
+* documents ([b776473](https://www.github.com/jappyjan/ferdig-client-js/commit/b7764730d5d56015a62ab91b7a7f0b44f2a35269))
+* **notification-templates:** added client ([3a05d2a](https://www.github.com/jappyjan/ferdig-client-js/commit/3a05d2ac83c2a93ab9fc7111a6e4d4b1682897d6))
+* **notification-templates:** no template actions ([3e23c94](https://www.github.com/jappyjan/ferdig-client-js/commit/3e23c9456a09243ff8d19f6d792f156c3caa3c1d))
+
 ## [1.12.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.11.0...v1.12.0) (2021-07-21)
 
 
