@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.13.0...v1.14.0) (2021-08-13)
+
+
+### Features
+
+* **versioning:** add method to retrieve api version ([17ad79a](https://www.github.com/jappyjan/ferdig-client-js/commit/17ad79a01b73e57f136302dde332228c43ba3fb7))
+
 ## [1.13.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.12.0...v1.13.0) (2021-08-10)
 
 
