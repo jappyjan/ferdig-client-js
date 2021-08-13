@@ -1,4 +1,4 @@
-import ApiRequest, {ApiRequestConfig} from './ApiRequest';
+import ApiRequest, {ApiRequestConfig, HTTP_METHOD} from './ApiRequest';
 import {FerdigApplicationsClient} from './Applications';
 import {FerdigAuthClient} from './Auth';
 import {BehaviorSubject} from 'rxjs';
@@ -36,5 +36,12 @@ export class FerdigClient {
             host,
         });
         return this;
+    }
+
+    public async getVersion(): Promise<string> {
+        return await this.apiClient.request<string>({
+            method: HTTP_METHOD.GET,
+            path: '/version',
+        });
     }
 }
