@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.14.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.14.0...v1.14.1) (2021-08-13)
+
+
+### Bug Fixes
+
+* **exports:** add missing exports ([df5fe96](https://www.github.com/jappyjan/ferdig-client-js/commit/df5fe96b2ebc6e7adf46ccd279a73aac1e20aee4))
+
 ## [1.14.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.13.0...v1.14.0) (2021-08-13)
 
 
