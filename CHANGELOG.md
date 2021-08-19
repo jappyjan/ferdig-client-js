@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.15.0...v1.16.0) (2021-08-19)
+
+
+### Features
+
+* **exports:** export AbstractSocketCrudClient ([9ce7e25](https://www.github.com/jappyjan/ferdig-client-js/commit/9ce7e2500f1ac7825d62ac9ac7b6f81cc0daddc4))
+
 ## [1.15.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.14.1...v1.15.0) (2021-08-19)
 
 
