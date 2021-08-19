@@ -8,7 +8,12 @@ export interface SocketChangeEvent<ItemType extends { id: string }, IdentifierTy
     identifier: IdentifierType;
 }
 
-export type FerdigObserver<T> = BehaviorSubject<T>;
+export type FerdigObserver<T> = {
+    subscribe: (cb: ((value: T) => unknown)) => void;
+    complete: () => void;
+    readonly value: T;
+    next: (value: T) => void;
+}
 
 export abstract class AbstractSocketCrudClient<ReturnType extends { id: string }, CreateType, UpdateType, ListParams, SocketChangeEventIdentifierType> extends BasicCrudClient<ReturnType, CreateType, UpdateType, ListParams> {
     protected readonly socket: SocketClient;

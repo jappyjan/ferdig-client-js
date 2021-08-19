@@ -2,7 +2,7 @@ import ApiRequest, {ApiRequestConfig, HTTP_METHOD} from '../../../ApiRequest';
 import {BehaviorSubject} from 'rxjs';
 import {FerdigApplicationCollectionsClient} from '../FerdigApplicationCollectionsClient';
 import {FerdigApplicationCollectionColumnValueType} from '../FerdigApplicationCollectionColumn';
-import {AbstractSocketCrudClient} from '../../../AbstractSocketCrudClient';
+import {AbstractSocketCrudClient, FerdigObserver} from '../../../AbstractSocketCrudClient';
 import {FerdigApplicationCollection} from '../FerdigApplicationCollection';
 
 export interface FerdigCollectionDocumentDefaultProperties {
@@ -43,7 +43,7 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends AbstractSocke
     private readonly collectionId: string;
     private readonly applicationId: string;
     private readonly collectionsClient: FerdigApplicationCollectionsClient;
-    private readonly collections: Map<string, BehaviorSubject<FerdigApplicationCollection>>;
+    private readonly collections: Map<string, FerdigObserver<FerdigApplicationCollection>>;
 
     public constructor(
         api: ApiRequest,
@@ -81,11 +81,11 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends AbstractSocke
         this.collectionId = collectionId;
         this.applicationId = applicationId;
         this.collectionsClient = new FerdigApplicationCollectionsClient(api, config, applicationId);
-        this.collections = new Map<string, BehaviorSubject<FerdigApplicationCollection>>();
+        this.collections = new Map<string, FerdigObserver<FerdigApplicationCollection>>();
     }
 
     private async getCollection(collectionId: string) {
-        let collectionSubject = this.collections.get(collectionId);
+        let collectionSubject: FerdigObserver<FerdigApplicationCollection> = this.collections.get(collectionId);
         if (!collectionSubject) {
             collectionSubject = await this.collectionsClient.getAndObserve(collectionId);
             this.collections.set(collectionId, collectionSubject);
