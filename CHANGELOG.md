@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.14.1...v1.15.0) (2021-08-19)
+
+
+### Features
+
+* **exports:** export BehaviourSubject as FerdigObserver ([a9601ee](https://www.github.com/jappyjan/ferdig-client-js/commit/a9601eefce53747bde3a75f08cce57198b499c5f))
+
 ### [1.14.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.14.0...v1.14.1) (2021-08-13)
 
 
