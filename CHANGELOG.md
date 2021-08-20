@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.16.2](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.16.1...v1.16.2) (2021-08-20)
+
+
+### Miscellaneous
+
+* **socket:** rename FerdigObserver to FerdigObservation ([9a22d76](https://www.github.com/jappyjan/ferdig-client-js/commit/9a22d76325b1f3dd4b5dbb136a556484a17116d5))
+
 ### [1.16.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.16.0...v1.16.1) (2021-08-20)
 
 
