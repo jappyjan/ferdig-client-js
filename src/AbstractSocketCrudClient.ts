@@ -8,7 +8,7 @@ export interface SocketChangeEvent<ItemType extends { id: string }, IdentifierTy
     identifier: IdentifierType;
 }
 
-export type FerdigObserver<T> = {
+export type FerdigObservation<T> = {
     subscribe: (cb: ((value: T) => unknown)) => void;
     complete: () => void;
     readonly value: T;
@@ -38,7 +38,7 @@ export abstract class AbstractSocketCrudClient<ReturnType extends { id: string }
         this.socketChangeEventItemMatcher = socketChangeEventItemMatcher;
     }
 
-    protected observeOne(item: ReturnType): FerdigObserver<ReturnType | null> {
+    protected observeOne(item: ReturnType): FerdigObservation<ReturnType | null> {
         const subject = new BehaviorSubject(item);
 
         const onChange = async (event: SocketChangeEvent<ReturnType, SocketChangeEventIdentifierType>) => {
@@ -71,19 +71,19 @@ export abstract class AbstractSocketCrudClient<ReturnType extends { id: string }
     }
 
     // noinspection JSUnusedGlobalSymbols
-    public async createAndObserve(data: CreateType): Promise<FerdigObserver<ReturnType | null>> {
+    public async createAndObserve(data: CreateType): Promise<FerdigObservation<ReturnType | null>> {
         const item = await this.create(data);
         return this.observeOne(item);
     }
 
-    public async getAndObserve(id: string): Promise<FerdigObserver<ReturnType | null>> {
+    public async getAndObserve(id: string): Promise<FerdigObservation<ReturnType | null>> {
         const item = await this.get(id);
         return this.observeOne(item);
     }
 
     public async listAndObserve(
         params: ListParams,
-    ): Promise<FerdigObserver<FerdigListResult<ReturnType>>> {
+    ): Promise<FerdigObservation<FerdigListResult<ReturnType>>> {
         const result = await this.list(params);
         const resultSubject = new BehaviorSubject(result);
 
