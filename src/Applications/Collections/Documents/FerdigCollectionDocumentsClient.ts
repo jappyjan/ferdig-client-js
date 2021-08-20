@@ -85,13 +85,13 @@ export class FerdigCollectionDocumentsClient<DocumentType> extends AbstractSocke
     }
 
     private async getCollection(collectionId: string) {
-        let collectionSubject: FerdigObservation<FerdigApplicationCollection> = this.collections.get(collectionId);
-        if (!collectionSubject) {
-            collectionSubject = await this.collectionsClient.getAndObserve(collectionId);
-            this.collections.set(collectionId, collectionSubject);
+        let collectionObservation: FerdigObservation<FerdigApplicationCollection> = this.collections.get(collectionId);
+        if (!collectionObservation) {
+            collectionObservation = await this.collectionsClient.getAndObserve(collectionId);
+            this.collections.set(collectionId, collectionObservation);
         }
 
-        return collectionSubject.value;
+        return collectionObservation.value;
     }
 
     protected async objectTransformer(object: ObjectTransformerInputType<DocumentType>): Promise<DocumentType & FerdigCollectionDocumentDefaultProperties> {

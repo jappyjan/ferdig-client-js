@@ -6,7 +6,7 @@ import {
     FerdigCollectionColumnsClientObjectTransformerInputType,
 } from './Columns/FerdigCollectionColumnsClient';
 import {BehaviorSubject, finalize} from 'rxjs';
-import {AbstractSocketCrudClient, SocketChangeEvent} from '../../AbstractSocketCrudClient';
+import {AbstractSocketCrudClient, FerdigObservation, SocketChangeEvent} from '../../AbstractSocketCrudClient';
 import {FerdigListResult} from '../../BasicCrudClient';
 import {FerdigApplicationCollectionColumn} from './FerdigApplicationCollectionColumn';
 
@@ -154,8 +154,8 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
         return client;
     }
 
-    protected observeOne(collection: FerdigApplicationCollection): BehaviorSubject<FerdigApplicationCollection | null> {
-        const subject = super.observeOne(collection);
+    protected observeOne(collection: FerdigApplicationCollection): FerdigObservation<FerdigApplicationCollection | null> {
+        const observation = super.observeOne(collection) as unknown as BehaviorSubject<FerdigApplicationCollection>;
 
         const collectionsClient = this.columns(collection.id);
 
@@ -173,7 +173,7 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
 
             const newColumns: FerdigApplicationCollectionColumn[] = [];
             let found = false;
-            subject.value.columns.forEach((existingColumn) => {
+            observation.value.columns.forEach((existingColumn) => {
                 if (existingColumn.id === identifier.columnId) {
                     if (!transformed) {
                         return;
@@ -191,8 +191,8 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
                 newColumns.push(transformed);
             }
 
-            subject.next({
-                ...subject.value,
+            observation.next({
+                ...observation.value,
                 columns: newColumns,
             });
         };
@@ -204,7 +204,7 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
             onChangeColumn.bind(this),
         );
 
-        subject.pipe(
+        observation.pipe(
             finalize(() => {
                 this.socket.off(
                     COLUMN_CHANGE_EVENT_NAME,
@@ -213,13 +213,13 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
             }),
         );
 
-        return subject;
+        return observation;
     }
 
     public async listAndObserve(
         params: FerdigCollectionListParams,
-    ): Promise<BehaviorSubject<FerdigListResult<FerdigApplicationCollection>>> {
-        const listSubject = await super.listAndObserve(params);
+    ): Promise<FerdigObservation<FerdigListResult<FerdigApplicationCollection>>> {
+        const listObservation = await super.listAndObserve(params) as unknown as BehaviorSubject<FerdigListResult<FerdigApplicationCollection>>;
 
         const columnChangeEventName = `applications/${this.applicationId}/collections/*/columns/*`;
 
@@ -230,7 +230,7 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
 
             if (
                 identifier.applicationId !== this.applicationId ||
-                !listSubject.value.items.map((collection) => collection.id).some((collectionId) => collectionId === identifier.collectionId)
+                !listObservation.value.items.map((collection) => collection.id).some((collectionId) => collectionId === identifier.collectionId)
             ) {
                 return;
             }
@@ -238,7 +238,7 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
             const transformed: FerdigApplicationCollectionColumn | null = item === null ? null : await collectionsClient.objectTransformer(item);
 
             const newCollections: FerdigApplicationCollection[] = [];
-            listSubject.value.items.forEach((collection) => {
+            listObservation.value.items.forEach((collection) => {
                 const newColumns: FerdigApplicationCollectionColumn[] = [];
                 let found = false;
                 collection.columns.forEach((existingColumn) => {
@@ -265,8 +265,8 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
                 });
             });
 
-            listSubject.next({
-                ...listSubject.value,
+            listObservation.next({
+                ...listObservation.value,
                 items: newCollections,
             });
         };
@@ -276,10 +276,10 @@ export class FerdigApplicationCollectionsClient extends AbstractSocketCrudClient
             onChangeColumn,
         );
 
-        listSubject.pipe(
+        listObservation.pipe(
             finalize(() => this.socket.off(columnChangeEventName, onChangeColumn)),
         );
 
-        return listSubject;
+        return listObservation;
     }
 }
