@@ -9,17 +9,18 @@ export interface FerdigAuthSignupPayload {
 }
 
 export interface FerdigAuthStartLocalSessionPayload {
-    protocol: 'local';
     email: string;
     password: string;
 }
 
-export interface FerdigAuthStartAnonymousSessionPayload {
-    protocol: 'anonymous';
-}
-
 export interface FerdigUserWithSessionToken extends FerdigUser {
     token: string;
+}
+
+interface StartSessionParams {
+    protocol: 'local' | 'anonymous';
+    data?: FerdigAuthStartLocalSessionPayload;
+    updateToken?: boolean;
 }
 
 export class FerdigAuthClient extends BasicApiClient {
@@ -34,14 +35,15 @@ export class FerdigAuthClient extends BasicApiClient {
         );
     }
 
-    public async startSession(
-        data?: FerdigAuthStartLocalSessionPayload | FerdigAuthStartAnonymousSessionPayload,
-        updateToken = true,
-    ): Promise<FerdigUserWithSessionToken> {
+    public async startSession(props: StartSessionParams): Promise<FerdigUserWithSessionToken> {
+        const {protocol, data, updateToken = true} = props;
+
+        const path = `${this.basePath}/sessions/${protocol}`;
+
         const response = await this.api.request<FerdigUserWithSessionToken>(
             {
                 method: HTTP_METHOD.POST,
-                path: `${this.basePath}/sessions`,
+                path,
                 payload: data,
             },
         );
