@@ -89,6 +89,7 @@ export abstract class AbstractSocketCrudClient<ReturnType extends { id: string }
 
         const onChange = async (event: SocketChangeEvent<ReturnType, SocketChangeEventIdentifierType>) => {
             if (!this.socketChangeEventFilter(event.identifier)) {
+                console.log('socketChangeEventFilter failed', event.identifier);
                 return;
             }
 
@@ -100,6 +101,7 @@ export abstract class AbstractSocketCrudClient<ReturnType extends { id: string }
             let found = false;
             resultSubject.value.items.forEach((item) => {
                 if (this.socketChangeEventItemMatcher(event.identifier, item)) {
+                    console.log('found');
                     found = true;
                     if (event.item === null) {
                         return;
@@ -108,6 +110,7 @@ export abstract class AbstractSocketCrudClient<ReturnType extends { id: string }
                     items.push(transformed);
                     return;
                 }
+                console.log('socketChangeEventItemMatcher failed', event.identifier, item);
 
                 items.push(item);
             });

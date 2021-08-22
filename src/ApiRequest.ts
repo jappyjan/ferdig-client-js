@@ -20,7 +20,6 @@ interface RequestParams {
     payload?: Record<never, never>;
     responseType?: ResponseType;
     contentType?: string;
-    headers?: Record<string, string>;
 }
 
 export default class ApiRequest {
@@ -64,8 +63,8 @@ export default class ApiRequest {
         return this;
     }
 
-    public async request<T>({method, path, payload, responseType, contentType, headers}: RequestParams): Promise<T> {
-        const headersMerged: Record<string, string> = {...headers};
+    public async request<T>({method, path, payload, responseType, contentType}: RequestParams): Promise<T> {
+        const headersMerged: Record<string, string> = {};
 
         if (contentType) {
             headersMerged['Content-Type'] = 'multipart/form-data';

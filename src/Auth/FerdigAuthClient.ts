@@ -45,9 +45,6 @@ export class FerdigAuthClient extends BasicApiClient {
                 method: HTTP_METHOD.POST,
                 path,
                 payload: data,
-                headers: {
-                    authorization: ''
-                }
             },
         );
 
