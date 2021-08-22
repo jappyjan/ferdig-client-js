@@ -9,16 +9,11 @@ export interface FerdigAuthSignupPayload {
 }
 
 export interface FerdigAuthStartLocalSessionPayload {
-    provider: 'local';
     email: string;
     password: string;
 }
 
-export interface FerdigAuthStartAnonymousSessionPayload {
-    provider: 'anonymous';
-}
-
-export interface FerdigUserWithSessionToken extends FerdigUser{
+export interface FerdigUserWithSessionToken extends FerdigUser {
     token: string;
 }
 
@@ -30,16 +25,21 @@ export class FerdigAuthClient extends BasicApiClient {
 
     public async signUp(data: FerdigAuthSignupPayload): Promise<FerdigUser> {
         return await this.api.request<FerdigUser>(
-            {method : HTTP_METHOD.POST, path : `${this.basePath}/signup`, payload : data},
+            {method: HTTP_METHOD.POST, path: `${this.basePath}/signup`, payload: data},
         );
     }
 
     public async startSession(
-        data: FerdigAuthStartAnonymousSessionPayload | FerdigAuthStartLocalSessionPayload,
-        updateToken = true
+        provider: 'local' | 'anonymous',
+        data?: FerdigAuthStartLocalSessionPayload,
+        updateToken = true,
     ): Promise<FerdigUserWithSessionToken> {
         const response = await this.api.request<FerdigUserWithSessionToken>(
-            {method : HTTP_METHOD.POST, path : `${this.basePath}/sessions`, payload : data},
+            {
+                method: HTTP_METHOD.POST,
+                path: `${this.basePath}/${provider}/sessions`,
+                payload: data,
+            },
         );
 
         if (updateToken) {
@@ -49,9 +49,16 @@ export class FerdigAuthClient extends BasicApiClient {
         return response;
     }
 
+
+
     public async getCurrentUser(): Promise<FerdigUser> {
         return await this.api.request<FerdigUserWithSessionToken>(
-            {method : HTTP_METHOD.GET, path : `${this.basePath}/sessions/current`},
+            {method : HTTP_METHOD.GET, path : `${this.basePath}
+/
+    sessions
+/
+    current
+`},
         );
     }
 }
