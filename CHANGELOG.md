@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.20.0...v1.21.0) (2021-08-22)
+
+
+### Features
+
+* **auth:** anonymous auth login ([a9740cc](https://www.github.com/jappyjan/ferdig-client-js/commit/a9740cc79388a42dc5d61af9b196886a683d518d))
+
 ## [1.20.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.19.0...v1.20.0) (2021-08-22)
 
 
