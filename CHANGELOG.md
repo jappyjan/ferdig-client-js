@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.24.4](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.24.3...v1.24.4) (2021-08-30)
+
+
+### Miscellaneous
+
+* rename nodemailer to smtp ([28e503a](https://www.github.com/jappyjan/ferdig-client-js/commit/28e503ac60d8dd96d40ad5a7a827da762fb904d3))
+
 ### [1.24.3](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.24.2...v1.24.3) (2021-08-30)
 
 
