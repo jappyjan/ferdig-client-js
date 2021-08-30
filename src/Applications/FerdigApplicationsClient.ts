@@ -7,7 +7,13 @@ import {FerdigApplicationAutomationsClient} from './Automations';
 import {FerdigApplicationNotificationTemplatesClient} from './NotificationTemplates';
 import {FerdigApplicationConfigurationClient} from './Config';
 
+export enum FerdigApplicationConfigurationEmailClientType {
+    Nodemailer = 'nodemailer',
+    AWS_SES = 'aws_ses',
+}
+
 export interface FerdigApplicationConfigurationEmailCreateData {
+    clientType: FerdigApplicationConfigurationEmailClientType;
     host: string;
     port: number;
     ssl: boolean;
@@ -15,6 +21,8 @@ export interface FerdigApplicationConfigurationEmailCreateData {
     authPassword: string;
     fromName: string;
     fromAddress: string;
+    replyToName: string;
+    replyToAddress: string;
 }
 
 export interface FerdigApplicationConfigurationCreateData {
@@ -103,7 +111,12 @@ export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication,
 
     public async getLogo(applicationId: string): Promise<Blob> {
         return await this.api.request<Blob>(
-            {method : HTTP_METHOD.GET, path : `${this.basePath}/${applicationId}/logo`, payload : undefined, responseType : 'blob'},
+            {
+                method: HTTP_METHOD.GET,
+                path: `${this.basePath}/${applicationId}/logo`,
+                payload: undefined,
+                responseType: 'blob',
+            },
         );
     }
 }
