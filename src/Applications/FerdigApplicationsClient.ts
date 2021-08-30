@@ -12,8 +12,12 @@ export enum FerdigApplicationConfigurationEmailClientType {
     AWS_SES = 'aws_ses',
 }
 
-export interface FerdigApplicationConfigurationEmailCreateData {
-    clientType: FerdigApplicationConfigurationEmailClientType;
+export interface FerdigApplicationConfigurationEmailAWSSESClientConfig {
+    fromAddress: string;
+    replyToAddress: string;
+}
+
+export interface FerdigApplicationConfigurationEmailNodemailerClientConfig {
     host: string;
     port: number;
     ssl: boolean;
@@ -25,13 +29,23 @@ export interface FerdigApplicationConfigurationEmailCreateData {
     replyToAddress: string;
 }
 
-export interface FerdigApplicationConfigurationCreateData {
-    email: FerdigApplicationConfigurationEmailCreateData;
+export type FerdigApplicationConfigurationEmailClientConfig = {
+    [FerdigApplicationConfigurationEmailClientType.AWS_SES]: FerdigApplicationConfigurationEmailAWSSESClientConfig;
+    [FerdigApplicationConfigurationEmailClientType.Nodemailer]: FerdigApplicationConfigurationEmailNodemailerClientConfig;
 }
 
-export interface FerdigApplicationCreateData {
+export interface FerdigApplicationConfigurationEmailCreateData<type extends FerdigApplicationConfigurationEmailClientType> {
+    clientType: type;
+    clientConfig: FerdigApplicationConfigurationEmailClientConfig[type];
+}
+
+export interface FerdigApplicationConfigurationCreateData<emailType extends FerdigApplicationConfigurationEmailClientType> {
+    email: FerdigApplicationConfigurationEmailCreateData<emailType>;
+}
+
+export interface FerdigApplicationCreateData<emailType extends FerdigApplicationConfigurationEmailClientType> {
     internalName: string;
-    configuration: FerdigApplicationConfigurationCreateData;
+    configuration: FerdigApplicationConfigurationCreateData<emailType>;
 }
 
 export interface FerdigApplicationListParams {
@@ -43,7 +57,7 @@ type ObjectTransformerInputType =
     Omit<FerdigApplication, 'createdAt' | 'updatedAt'>
     & { createdAt: string; updatedAt: string };
 
-export class FerdigApplicationsClient extends BasicCrudClient<FerdigApplication, FerdigApplicationCreateData, Partial<FerdigApplicationCreateData>, FerdigApplicationListParams> {
+export class FerdigApplicationsClient<emailType extends FerdigApplicationConfigurationEmailClientType> extends BasicCrudClient<FerdigApplication, FerdigApplicationCreateData<emailType>, Partial<FerdigApplicationCreateData<emailType>>, FerdigApplicationListParams> {
     private readonly config: BehaviorSubject<ApiRequestConfig>;
     private readonly collectionsClientInstances: Map<string, FerdigApplicationCollectionsClient>;
     private readonly automationsClientInstances: Map<string, FerdigApplicationAutomationsClient>;
