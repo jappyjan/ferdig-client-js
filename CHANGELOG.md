@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.23.0...v1.24.0) (2021-08-30)
+
+
+### Features
+
+* **applications:** client type config ([a9a4fb5](https://www.github.com/jappyjan/ferdig-client-js/commit/a9a4fb5c5b0d609c554f413c88d183b1f546b54d))
+
 ## [1.23.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.22.0...v1.23.0) (2021-08-30)
 
 
