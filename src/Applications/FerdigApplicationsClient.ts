@@ -8,7 +8,7 @@ import {FerdigApplicationNotificationTemplatesClient} from './NotificationTempla
 import {FerdigApplicationConfigurationClient} from './Config';
 
 export enum FerdigApplicationConfigurationEmailClientType {
-    Nodemailer = 'nodemailer',
+    SMTP = 'smtp',
     AWS_SES = 'aws_ses',
 }
 
@@ -18,7 +18,7 @@ export interface FerdigApplicationConfigurationEmailAWSSESClientConfig {
     region: string;
 }
 
-export interface FerdigApplicationConfigurationEmailNodemailerClientConfig {
+export interface FerdigApplicationConfigurationEmailSMTPClientConfig {
     host: string;
     port: number;
     ssl: boolean;
@@ -32,7 +32,7 @@ export interface FerdigApplicationConfigurationEmailNodemailerClientConfig {
 
 export type FerdigApplicationConfigurationEmailClientConfig = {
     [FerdigApplicationConfigurationEmailClientType.AWS_SES]: FerdigApplicationConfigurationEmailAWSSESClientConfig;
-    [FerdigApplicationConfigurationEmailClientType.Nodemailer]: FerdigApplicationConfigurationEmailNodemailerClientConfig;
+    [FerdigApplicationConfigurationEmailClientType.SMTP]: FerdigApplicationConfigurationEmailSMTPClientConfig;
 }
 
 export interface FerdigApplicationConfigurationEmailCreateData<type extends FerdigApplicationConfigurationEmailClientType> {
