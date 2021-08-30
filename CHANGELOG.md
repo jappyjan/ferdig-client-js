@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.25.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.25.0...v1.25.1) (2021-08-30)
+
+
+### Bug Fixes
+
+* compile this pls ([2118181](https://www.github.com/jappyjan/ferdig-client-js/commit/21181811fe2886fcb4e2bc9b11b9d314bf46e24f))
+
 ## [1.25.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.24.4...v1.25.0) (2021-08-30)
 
 
