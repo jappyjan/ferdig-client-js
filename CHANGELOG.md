@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.24.2](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.24.1...v1.24.2) (2021-08-30)
+
+
+### Bug Fixes
+
+* current session path ([2d66bfb](https://www.github.com/jappyjan/ferdig-client-js/commit/2d66bfb9d105d400f7e924fac565951204bae66c))
+* current session path ([d424027](https://www.github.com/jappyjan/ferdig-client-js/commit/d4240273562a55d81a5708b6ff9cc05847c5bf32))
+
 ### [1.24.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.24.0...v1.24.1) (2021-08-30)
 
 
