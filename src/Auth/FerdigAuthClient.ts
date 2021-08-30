@@ -59,7 +59,8 @@ export class FerdigAuthClient extends BasicApiClient {
     public async getCurrentUser(): Promise<FerdigUser> {
         return await this.api.request<FerdigUserWithSessionToken>(
             {
-                method: HTTP_METHOD.GET, path: `${this.basePath}/sessions/current`,
+                method: HTTP_METHOD.GET,
+                path: `${this.basePath}/sessions/current`,
             },
         );
     }
