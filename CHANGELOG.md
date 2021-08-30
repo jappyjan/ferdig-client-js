@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.24.1](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.24.0...v1.24.1) (2021-08-30)
+
+
+### Bug Fixes
+
+* missing generic type declaration ([403d60e](https://www.github.com/jappyjan/ferdig-client-js/commit/403d60e3a36b79a8f1bbda3d7193beb80c5d78fd))
+
 ## [1.24.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.23.0...v1.24.0) (2021-08-30)
 
 
