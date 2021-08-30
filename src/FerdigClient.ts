@@ -1,11 +1,11 @@
 import ApiRequest, {ApiRequestConfig, HTTP_METHOD} from './ApiRequest';
-import {FerdigApplicationsClient} from './Applications';
+import {FerdigApplicationConfigurationEmailClientType, FerdigApplicationsClient} from './Applications';
 import {FerdigAuthClient} from './Auth';
 import {BehaviorSubject} from 'rxjs';
 import {FerdigUsersClient} from './Users';
 
-export class FerdigClient {
-    public readonly applications: FerdigApplicationsClient;
+export class FerdigClient<EmailClientType extends FerdigApplicationConfigurationEmailClientType> {
+    public readonly applications: FerdigApplicationsClient<EmailClientType>;
     public readonly auth: FerdigAuthClient;
     private readonly apiClient: ApiRequest;
     private readonly config: BehaviorSubject<ApiRequestConfig>;
