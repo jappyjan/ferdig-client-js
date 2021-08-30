@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.24.4...v1.25.0) (2021-08-30)
+
+
+### Features
+
+* add README.md ([4704f67](https://www.github.com/jappyjan/ferdig-client-js/commit/4704f674c0e90e5e236b7f43b2eb80b0d370a6a1))
+
 ### [1.24.4](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.24.3...v1.24.4) (2021-08-30)
 
 
