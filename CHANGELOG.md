@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.24.3](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.24.2...v1.24.3) (2021-08-30)
+
+
+### Bug Fixes
+
+* aws region for email config ([1750ff1](https://www.github.com/jappyjan/ferdig-client-js/commit/1750ff1357e31e85298dfd430f3d8dfbdfcc86aa))
+
 ### [1.24.2](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.24.1...v1.24.2) (2021-08-30)
 
 
