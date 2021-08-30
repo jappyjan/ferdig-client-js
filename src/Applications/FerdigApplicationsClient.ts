@@ -33,7 +33,6 @@ export interface FerdigApplicationConfigurationEmailSMTPClientConfig {
 export type FerdigApplicationConfigurationEmailClientConfig = {
     [FerdigApplicationConfigurationEmailClientType.AWS_SES]: FerdigApplicationConfigurationEmailAWSSESClientConfig;
     [FerdigApplicationConfigurationEmailClientType.SMTP]: FerdigApplicationConfigurationEmailSMTPClientConfig;
-    ['why']: { da: 'hell' };
 }
 
 export interface FerdigApplicationConfigurationEmailCreateData<type extends FerdigApplicationConfigurationEmailClientType> {
