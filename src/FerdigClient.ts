@@ -29,6 +29,10 @@ export class FerdigClient<EmailClientType extends FerdigApplicationConfiguration
         return this;
     }
 
+    public getToken(): string {
+        return this.config.value.token;
+    }
+
     public setHost(host: string): this {
         this.apiClient.setHost(host);
         this.config.next({
@@ -36,6 +40,10 @@ export class FerdigClient<EmailClientType extends FerdigApplicationConfiguration
             host,
         });
         return this;
+    }
+
+    public getHost(): string {
+        return this.config.value.host;
     }
 
     public async getVersion(): Promise<string> {
