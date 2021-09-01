@@ -15,7 +15,6 @@ export enum FerdigApplicationConfigurationEmailClientType {
 export interface FerdigApplicationConfigurationEmailAWSSESClientConfig {
     fromAddress: string;
     replyToAddress: string;
-    region: string;
 }
 
 export interface FerdigApplicationConfigurationEmailSMTPClientConfig {
