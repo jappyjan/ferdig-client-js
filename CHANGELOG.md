@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.25.3...v1.26.0) (2021-09-01)
+
+
+### Features
+
+* getters for token and host ([25a1c0c](https://www.github.com/jappyjan/ferdig-client-js/commit/25a1c0c065d81b2d1aaee91f8e72110b55e01c3e))
+
 ### [1.25.3](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.25.2...v1.25.3) (2021-09-01)
 
 
