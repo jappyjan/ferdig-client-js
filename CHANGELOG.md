@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.25.3](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.25.2...v1.25.3) (2021-09-01)
+
+
+### Bug Fixes
+
+* removal of region for ses ([45b5d26](https://www.github.com/jappyjan/ferdig-client-js/commit/45b5d26b4ee4b1d142f818d59e1f83a3645dec2f))
+
 ### [1.25.2](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.25.1...v1.25.2) (2021-08-30)
 
 
