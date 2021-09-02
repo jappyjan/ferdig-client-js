@@ -17,10 +17,22 @@ export interface FerdigApplicationConfigurationEmailAWSSESClientConfig {
     replyToAddress: string;
 }
 
+export enum FerdigApplicationConfigurationEmailSMTPClientConfigAuthType {
+    LOGIN = 'LOGIN',
+    OAuth2 = 'OAuth2'
+}
+
 export interface FerdigApplicationConfigurationEmailSMTPClientConfig {
     host: string;
     port: number;
     ssl: boolean;
+    auth: {
+        type: FerdigApplicationConfigurationEmailSMTPClientConfigAuthType;
+        user: string;
+        pass: string | null;
+        serviceClient: string | null;
+        privateKey: string | null;
+    }
     authUser: string;
     authPassword: string;
     fromName: string;
