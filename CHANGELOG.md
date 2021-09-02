@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.27.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.26.0...v1.27.0) (2021-09-02)
+
+
+### Features
+
+* app config email auth ([78084e8](https://www.github.com/jappyjan/ferdig-client-js/commit/78084e8d7c779d10750fa40841cfe7fd1c3cabc9))
+
 ## [1.26.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.25.3...v1.26.0) (2021-09-01)
 
 
