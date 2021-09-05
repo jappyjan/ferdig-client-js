@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.29.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.28.0...v1.29.0) (2021-09-05)
+
+
+### Features
+
+* sendgrid integration ([2650d8e](https://www.github.com/jappyjan/ferdig-client-js/commit/2650d8e8d14246da4c9e07d93329aa07b1fb6d1e))
+
 ## [1.28.0](https://www.github.com/jappyjan/ferdig-client-js/compare/v1.27.0...v1.28.0) (2021-09-05)
 
 
