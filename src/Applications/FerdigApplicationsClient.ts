@@ -49,15 +49,11 @@ export interface FerdigApplicationConfigurationEmailSMTPClientConfig {
     replyToAddress: string;
 }
 
-export type FerdigApplicationConfigurationEmailClientConfig = {
-    [FerdigApplicationConfigurationEmailClientType.AWS_SES]: FerdigApplicationConfigurationEmailAWSSESClientConfig;
-    [FerdigApplicationConfigurationEmailClientType.SMTP]: FerdigApplicationConfigurationEmailSMTPClientConfig;
-    [FerdigApplicationConfigurationEmailClientType.SendGrid]: FerdigApplicationConfigurationEmailSendGridClientConfig;
-}
-
 export interface FerdigApplicationConfigurationEmailCreateData<type extends FerdigApplicationConfigurationEmailClientType> {
     clientType: type;
-    clientConfig: FerdigApplicationConfigurationEmailClientConfig[type];
+    smtp: type extends FerdigApplicationConfigurationEmailClientType.SMTP ? FerdigApplicationConfigurationEmailSMTPClientConfig : null;
+    awsSes: type extends FerdigApplicationConfigurationEmailClientType.AWS_SES ? FerdigApplicationConfigurationEmailAWSSESClientConfig : null;
+    sendGrid: type extends FerdigApplicationConfigurationEmailClientType.SendGrid ? FerdigApplicationConfigurationEmailSendGridClientConfig : null;
 }
 
 export interface FerdigApplicationConfigurationCreateData<emailType extends FerdigApplicationConfigurationEmailClientType> {
