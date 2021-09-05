@@ -10,11 +10,17 @@ import {FerdigApplicationConfigurationClient} from './Config';
 export enum FerdigApplicationConfigurationEmailClientType {
     SMTP = 'smtp',
     AWS_SES = 'aws_ses',
+    SendGrid = 'sendgrid'
 }
 
 export interface FerdigApplicationConfigurationEmailAWSSESClientConfig {
     fromAddress: string;
     replyToAddress: string;
+}
+
+export interface FerdigApplicationConfigurationEmailSendGridClientConfig {
+    fromAddress: string;
+    apiKey: string;
 }
 
 export enum FerdigApplicationConfigurationEmailSMTPClientConfigAuthType {
@@ -44,6 +50,7 @@ export interface FerdigApplicationConfigurationEmailSMTPClientConfig {
 export type FerdigApplicationConfigurationEmailClientConfig = {
     [FerdigApplicationConfigurationEmailClientType.AWS_SES]: FerdigApplicationConfigurationEmailAWSSESClientConfig;
     [FerdigApplicationConfigurationEmailClientType.SMTP]: FerdigApplicationConfigurationEmailSMTPClientConfig;
+    [FerdigApplicationConfigurationEmailClientType.SendGrid]: FerdigApplicationConfigurationEmailSendGridClientConfig;
 }
 
 export interface FerdigApplicationConfigurationEmailCreateData<type extends FerdigApplicationConfigurationEmailClientType> {
