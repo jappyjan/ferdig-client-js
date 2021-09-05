@@ -20,7 +20,9 @@ export interface FerdigApplicationConfigurationEmailAWSSESClientConfig {
 
 export interface FerdigApplicationConfigurationEmailSendGridClientConfig {
     fromAddress: string;
-    apiKey: string;
+    auth: {
+        apiKey: string;
+    }
 }
 
 export enum FerdigApplicationConfigurationEmailSMTPClientConfigAuthType {
